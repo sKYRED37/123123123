@@ -7,8 +7,8 @@ import Database from 'better-sqlite3';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 3000);
-const BOT_TOKEN = process.env.BOT_TOKEN || '';
-const OWNER_TELEGRAM_ID = String(process.env.INITIAL_OWNER_TELEGRAM_ID || '');
+const BOT_TOKEN = process.env. || '8712212446:AAHfv4VRpM47WpJ2sy2gRo57lQJmbnPGi44';
+const OWNER_TELEGRAM_ID = String(process.env.INITIAL_OWNER_TELEGRAM_ID || '1766395031');
 
 if (!BOT_TOKEN) console.warn('BOT_TOKEN is not set. Telegram authentication will be unavailable until it is configured.');
 
