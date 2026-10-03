@@ -1,0 +1,448 @@
+{
+  "teams": [
+    {
+      "id": "t1",
+      "tag": "PHX",
+      "name": "Phoenix Rising",
+      "logo": "🔥",
+      "desc": "Основной состав StandRise."
+    },
+    {
+      "id": "t2",
+      "tag": "NWF",
+      "name": "Night Wolves",
+      "logo": "🐺",
+      "desc": "Играем ночью, побеждаем днём."
+    },
+    {
+      "id": "t3",
+      "tag": "NST",
+      "name": "Neon Storm",
+      "logo": "⚡",
+      "desc": "Быстро. Агрессивно. Точно."
+    }
+  ],
+  "players": [
+    {
+      "id": "p1",
+      "nick": "Kaizen",
+      "plat": "OWNER",
+      "team": "t1",
+      "role": "OWNER",
+      "k": 1840,
+      "d": 1320,
+      "adr": 84.2,
+      "w": 41,
+      "l": 19
+    },
+    {
+      "id": "p2",
+      "nick": "Vortex",
+      "plat": "ADMIN",
+      "team": "t1",
+      "role": "LEADER",
+      "k": 1602,
+      "d": 1390,
+      "adr": 78.5,
+      "w": 38,
+      "l": 22
+    },
+    {
+      "id": "p3",
+      "nick": "Sniper_X",
+      "team": "t1",
+      "role": "PLAYER",
+      "k": 1410,
+      "d": 1260,
+      "adr": 74.9,
+      "w": 36,
+      "l": 24
+    },
+    {
+      "id": "p4",
+      "nick": "Ghost",
+      "plat": "ORGANIZER",
+      "team": "t2",
+      "role": "OWNER",
+      "k": 1730,
+      "d": 1500,
+      "adr": 80.1,
+      "w": 33,
+      "l": 27
+    },
+    {
+      "id": "p5",
+      "nick": "Blaze",
+      "team": "t2",
+      "role": "LEADER",
+      "k": 1288,
+      "d": 1310,
+      "adr": 70.3,
+      "w": 28,
+      "l": 32
+    },
+    {
+      "id": "p6",
+      "nick": "Raven",
+      "team": "t2",
+      "role": "PLAYER",
+      "k": 1190,
+      "d": 1260,
+      "adr": 68.8,
+      "w": 26,
+      "l": 30
+    },
+    {
+      "id": "p7",
+      "nick": "Storm",
+      "team": "t3",
+      "role": "OWNER",
+      "k": 1510,
+      "d": 1210,
+      "adr": 79.7,
+      "w": 30,
+      "l": 20
+    },
+    {
+      "id": "p8",
+      "nick": "Zero",
+      "team": "t3",
+      "role": "PLAYER",
+      "k": 1105,
+      "d": 1180,
+      "adr": 66.2,
+      "w": 22,
+      "l": 28
+    },
+    {
+      "id": "p9",
+      "nick": "Nova",
+      "team": null,
+      "role": null,
+      "k": 620,
+      "d": 640,
+      "adr": 65.1,
+      "w": 12,
+      "l": 14
+    },
+    {
+      "id": "p10",
+      "nick": "Drift",
+      "team": null,
+      "role": null,
+      "k": 410,
+      "d": 480,
+      "adr": 58.4,
+      "w": 8,
+      "l": 13
+    },
+    {
+      "id": "p11",
+      "nick": "Frost",
+      "team": "t1",
+      "role": "PLAYER",
+      "k": 980,
+      "d": 1010,
+      "adr": 64.5,
+      "w": 20,
+      "l": 25
+    },
+    {
+      "id": "p12",
+      "nick": "Echo",
+      "team": "t1",
+      "role": "PLAYER",
+      "k": 870,
+      "d": 940,
+      "adr": 62.1,
+      "w": 18,
+      "l": 22
+    },
+    {
+      "id": "p13",
+      "nick": "Viper",
+      "team": "t2",
+      "role": "PLAYER",
+      "k": 940,
+      "d": 990,
+      "adr": 63,
+      "w": 19,
+      "l": 24
+    },
+    {
+      "id": "p14",
+      "nick": "Hawk",
+      "team": "t2",
+      "role": "PLAYER",
+      "k": 820,
+      "d": 900,
+      "adr": 60.2,
+      "w": 17,
+      "l": 23
+    }
+  ],
+  "matches": [
+    {
+      "id": "m1",
+      "ev": "e1",
+      "stage": "group",
+      "grp": "A",
+      "date": "2026-10-02",
+      "t1": "t1",
+      "t2": "t2",
+      "maps": [
+        {
+          "map": "Sandstone",
+          "a": 13,
+          "b": 9
+        },
+        {
+          "map": "Province",
+          "a": 11,
+          "b": 13
+        },
+        {
+          "map": "Rust",
+          "a": 13,
+          "b": 7
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "ev": "e1",
+      "stage": "group",
+      "grp": "A",
+      "date": "2026-09-29",
+      "t1": "t3",
+      "t2": "t1",
+      "maps": [
+        {
+          "map": "Zone 9",
+          "a": 8,
+          "b": 13
+        },
+        {
+          "map": "Dune",
+          "a": 10,
+          "b": 13
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "ev": "e1",
+      "stage": "group",
+      "grp": "A",
+      "date": "2026-09-25",
+      "t1": "t2",
+      "t2": "t3",
+      "maps": [
+        {
+          "map": "Hanami",
+          "a": 13,
+          "b": 11
+        },
+        {
+          "map": "Breeze",
+          "a": 9,
+          "b": 13
+        },
+        {
+          "map": "Sandstone",
+          "a": 13,
+          "b": 10
+        }
+      ]
+    }
+  ],
+  "invites": [],
+  "events": [
+    {
+      "id": "e1",
+      "stages": {
+        "group": "Bo3",
+        "playoff": "Bo3",
+        "final": "Bo5",
+        "third": "Bo3"
+      },
+      "groups": [
+        {
+          "name": "A",
+          "teams": [
+            "t1",
+            "t2",
+            "t3"
+          ]
+        }
+      ],
+      "by": "p4",
+      "name": "StandRise Open Cup #1",
+      "status": "live",
+      "date": "2026-10-03",
+      "prize": "50 000 ₽",
+      "max": 8,
+      "teams": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "fmt": "Bo3 · Single Elimination",
+      "desc": "Первый открытый кубок StandRise REWORK. Плей-офф идёт прямо сейчас."
+    },
+    {
+      "id": "e2",
+      "stages": {
+        "group": "Bo2",
+        "playoff": "Bo3",
+        "final": "Bo5",
+        "third": "Bo3"
+      },
+      "by": "p4",
+      "name": "Autumn Rise Cup",
+      "status": "reg",
+      "date": "2026-10-12",
+      "prize": "100 000 ₽",
+      "max": 16,
+      "teams": [
+        "t1"
+      ],
+      "fmt": "Bo3 · Double Elimination",
+      "desc": "Осенний турнир. Открыта регистрация команд."
+    },
+    {
+      "id": "e3",
+      "by": "p4",
+      "name": "Pre-Season Showdown",
+      "status": "reg",
+      "date": "2026-10-20",
+      "prize": "25 000 ₽",
+      "max": 8,
+      "teams": [],
+      "fmt": "Bo1 · Групповой этап + плей-офф",
+      "desc": "Разминочный турнир перед сезоном."
+    },
+    {
+      "id": "e4",
+      "places": {
+        "t1": {
+          "lo": 1,
+          "hi": 1
+        },
+        "t2": {
+          "lo": 2,
+          "hi": 2
+        },
+        "t3": {
+          "lo": 3,
+          "hi": 3
+        }
+      },
+      "roster": {
+        "t1": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "t2": [
+          "p4",
+          "p5",
+          "p6"
+        ],
+        "t3": [
+          "p7",
+          "p8"
+        ]
+      },
+      "by": "p4",
+      "name": "Summer Kickoff",
+      "status": "done",
+      "date": "2026-08-15",
+      "prize": "30 000 ₽",
+      "max": 8,
+      "teams": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "fmt": "Bo3 · Single Elimination",
+      "desc": "Завершённый летний турнир."
+    },
+    {
+      "id": "e5",
+      "by": "p4",
+      "name": "Swiss Masters",
+      "status": "live",
+      "date": "2026-10-04",
+      "prize": "75 000 ₽",
+      "max": 8,
+      "teams": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "stages": {
+        "s1": "swiss",
+        "group": "Bo1",
+        "rounds": 3,
+        "adv": 2,
+        "playoff": "Bo3",
+        "final": "Bo5",
+        "third": "Bo3"
+      },
+      "groups": [],
+      "desc": "Швейцарская система, затем плей-офф с матчем за 3 место."
+    }
+  ],
+  "praks": [
+    {
+      "id": "k1",
+      "t1": "t2",
+      "t2": "t1",
+      "date": "2026-10-06",
+      "time": "21:00",
+      "fmt": "Bo3",
+      "note": "Готовимся к кубку, сыграем?",
+      "status": "pending",
+      "maps": []
+    },
+    {
+      "id": "k2",
+      "t1": "t1",
+      "t2": "t3",
+      "date": "2026-10-05",
+      "time": "20:00",
+      "fmt": "Bo2",
+      "note": "",
+      "status": "accepted",
+      "maps": []
+    },
+    {
+      "id": "k3",
+      "t1": "t1",
+      "t2": "t2",
+      "date": "2026-10-01",
+      "time": "19:00",
+      "fmt": "Bo3",
+      "note": "",
+      "status": "done",
+      "maps": [
+        {
+          "map": "Rust",
+          "a": 13,
+          "b": 6
+        },
+        {
+          "map": "Dune",
+          "a": 9,
+          "b": 13
+        },
+        {
+          "map": "Zone 9",
+          "a": 13,
+          "b": 11
+        }
+      ]
+    }
+  ]
+}
