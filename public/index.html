@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><title>Topoff Ranked</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#0a0c12;--bg2:#12151f;--bg3:#1a1e2c;--line:#262b3d;--tx:#e8ebf5;--mu:#7d86a3;--ac:#ff5a1f;--ac2:#18e0c8;--ok:#2fd67b;--bad:#ff4560;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(var(--bg),#0a0c12ee);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.logo{font-weight:900;letter-spacing:1px;font-size:18px}.logo b{color:var(--ac)}.logo i{font-style:normal;color:var(--ac2);font-size:11px;margin-left:6px;border:1px solid var(--ac2);padding:1px 5px;border-radius:4px}
+.back{background:var(--bg3);border:0;color:var(--tx);border-radius:10px;width:34px;height:34px;font-size:18px}
+main{padding:14px 16px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mu);margin:18px 0 10px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:10px}.sp{flex:1;min-width:0}.t{font-weight:700}.m{color:var(--mu);font-size:12px}
+.click{cursor:pointer}.click:active{background:var(--bg3)}
+.ava{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--ac),#7a2cff);display:grid;place-items:center;font-weight:800;flex:none;overflow:hidden;font-size:20px}
+.ava img{width:100%;height:100%;object-fit:cover}.ava.big{width:64px;height:64px;font-size:30px;border-radius:18px}
+.hero{background:radial-gradient(circle at 85% 0,#ff5a1f55,transparent 55%),radial-gradient(circle at 0 100%,#18e0c833,transparent 50%),var(--bg2);border:1px solid var(--line);border-radius:18px;padding:18px}
+.hero h1{font-size:24px;line-height:1.1}.hero h1 span{color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid.g2{grid-template-columns:repeat(2,1fr)}
+.st{background:var(--bg3);border-radius:12px;padding:10px;text-align:center}.st b{display:block;font-size:20px}.st span{font-size:11px;color:var(--mu);text-transform:uppercase}
+.pos{color:var(--ok)}.neg{color:var(--bad)}
+input,select,textarea{width:100%;background:var(--bg3);border:1px solid var(--line);color:var(--tx);border-radius:12px;padding:12px;font:inherit;outline:0;margin-bottom:8px}
+input:focus,select:focus,textarea:focus{border-color:var(--ac)}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:700;font:inherit;font-weight:700;width:100%;margin-top:6px}
+.btn.s{width:auto;padding:7px 11px;font-size:13px;margin:0}.btn.g{background:var(--bg3);color:var(--tx)}.btn.d{background:#ff456022;color:var(--bad)}.btn.c{background:#18e0c822;color:var(--ac2)}
+.tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;letter-spacing:.5px}
+.OWNER{background:#ffb02033;color:#ffb020}.LEADER{background:#18e0c822;color:var(--ac2)}.PLAYER{background:var(--bg3);color:var(--mu)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px}.tabs button{flex:none;background:var(--bg2);border:1px solid var(--line);color:var(--mu);border-radius:10px;padding:8px 12px;font:inherit;font-size:13px}.tabs button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:560px;display:flex;background:#0d1019f2;backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+nav button{flex:1;background:0;border:0;color:var(--mu);font:inherit;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:10px}nav button span{font-size:20px}nav button.on{color:var(--ac)}
+.map{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-top:1px dashed var(--line)}
+.score{font-size:22px;font-weight:900;white-space:nowrap}
+.rk{width:34px;text-align:center;font-weight:900;font-size:15px;color:var(--mu);flex:none}.rk.r1{color:#ffc400}.rk.r2{color:#c4cde0}.rk.r3{color:#d9803f}
+.tag.live{background:#ff456033;color:var(--bad)}.tag.reg{background:#2fd67b22;color:var(--ok)}.tag.done{background:var(--bg3);color:var(--mu)}
+.mini{width:62px!important;margin:0 0 0 6px!important;padding:8px 4px!important;text-align:center}
+.tag.org{background:#a06bff33;color:#b78bff}
+.tb{width:100%;border-collapse:collapse;font-size:13px}.tb th{color:var(--mu);font-weight:600;text-align:center;padding:6px 2px;font-size:11px}.tb td{padding:8px 2px;text-align:center;border-top:1px solid var(--line)}.tb td:nth-child(2){text-align:left;font-weight:700}.tb tr.q td{background:#2fd67b12}
+.br{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:stretch}.bcol{min-width:172px;display:flex;flex-direction:column}.bh{text-align:center;font-size:12px;font-weight:700;margin-bottom:8px}.bh span{display:block;color:var(--ac2);font-size:11px}.bc{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:10px}.bm{background:var(--bg2);border:1px solid var(--line);border-radius:10px;overflow:hidden}.bm.click{border-color:var(--ac)}.bt{display:flex;justify-content:space-between;gap:6px;padding:8px 10px;font-size:13px;border-top:1px solid var(--line)}.bt:first-child{border:0}.bt.w{background:#2fd67b1f;font-weight:800}.bt.n{color:var(--mu)}
+.sheet{position:fixed;inset:0;background:#000a;z-index:20;display:flex;align-items:flex-end;justify-content:center}.sheet>div{background:var(--bg2);border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));width:100%;max-width:560px;max-height:85%;overflow:auto}
+.demo{font-size:11px;color:var(--mu);background:var(--bg2);border:1px dashed var(--line);border-radius:12px;padding:8px;margin-top:18px}.demo select{margin:6px 0 0;padding:8px}
+label{font-size:12px;color:var(--mu);display:block;margin:2px 0 4px}
+.tb.mt td:nth-child(2){text-align:center;font-weight:400}
+.tag.reserve{background:#ffffff14;color:#c4cde0}
+.ava.huge{width:84px;height:84px;font-size:38px;border-radius:20px}
+.sc{border-radius:10px;padding:10px;text-align:center}.sc b{display:block;font-size:20px}.sc span{font-size:11px;opacity:.85;text-transform:uppercase}.cg{background:#1f7a45}.cy{background:#8a8530}.cr{background:#8b3340}.cn{background:var(--bg3)}
+.shot{width:100%;border-radius:10px;margin-top:8px;display:block;cursor:zoom-in}
+</style></head><body>
+<header id="hd"></header><main id="app"></main><nav id="nav"></nav><div id="sh"></div>
+<script src="/config.js"></script>
+<script>
+let tg=(window.Telegram&&Telegram.WebApp)||null;
+if(!tg||!tg.initData){try{const hd=new URLSearchParams((location.hash||'').slice(1)).get('tgWebAppData');if(hd){let us=null;try{us=JSON.parse(new URLSearchParams(hd).get('user'))}catch(_){}tg=Object.assign(tg||{},{initData:hd,initDataUnsafe:Object.assign({},tg&&tg.initDataUnsafe,{user:us}),ready(){},expand(){}})}}catch(_){}}
+try{if(!(window.Telegram&&Telegram.WebApp)){const sc=document.createElement('script');sc.src='https://telegram.org/js/telegram-web-app.js';sc.async=true;sc.onload=()=>{try{const w=window.Telegram.WebApp;w.ready();w.expand();w.setHeaderColor('#0a0c12');w.setBackgroundColor('#0a0c12')}catch(e){}};document.head.appendChild(sc)}}catch(e){}
+if(tg){try{tg.ready();tg.expand();tg.setHeaderColor('#0a0c12');tg.setBackgroundColor('#0a0c12')}catch(e){}}
+let uid=100;const nid=()=>'x'+(uid++);
+const S={
+teams:[],players:[],matches:[],etab:'over',rq:'',invites:[],events:[],praks:[],route:{p:'home'},pf:'all',tf:'all',hist:[],me:null,admin:true,q:'',tab:'invite',atab:'players'};
+const API_BASE=String(window.STANDRISE_API_BASE||'/api').replace(/\/$/,'');
+let apiReady=false;
+async function apiJson(url,options={}){const r=await fetch(API_BASE+url,{headers:{'Content-Type':'application/json','X-Telegram-Init-Data':tg&&tg.initData?tg.initData:''},...options});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||'Ошибка сервера');return d}
+const save=()=>{try{S.events.forEach(autoDq)}catch(e){console.warn('autoDq:',e)}if(!apiReady)return;const payload={teams:S.teams,players:S.players,matches:S.matches,invites:S.invites,events:S.events,praks:S.praks};apiJson('/state',{method:'PUT',body:JSON.stringify(payload)}).catch(e=>console.warn('Topoff sync:',e.message));};
+async function bootstrapOnline(){
+  try{
+    const d=await apiJson('/bootstrap');
+    apiReady=true;
+    ['teams','players','matches','invites','events','praks'].forEach(k=>{if(Array.isArray(d.state?.[k]))S[k]=d.state[k]});
+    if(d.user){
+      const p=S.players.find(x=>String(x.tg)===String(d.user.telegramId)||String(x.id)===String(d.user.playerId));
+      if(p)S.me=p.id;
+      S.real=true;S.admin=false;S.reg=!p;
+      if(!p)S.pending={tg:String(d.user.telegramId),nick:d.user.username||d.user.firstName||''};
+    }
+    if(d.state?.nextId)uid=Math.max(uid,Number(d.state.nextId)||uid);
+    normalizeAfterLoad();
+  }catch(e){
+    console.warn('Topoff backend unavailable:',e.message);if(tg&&tg.initData)setTimeout(()=>toast('Сервер не ответил: '+e.message),400);
+    // Вне Telegram оставляем локальный демо-режим.
+    try{const sv=localStorage.getItem('sr');if(sv){const o=JSON.parse(sv);['teams','players','matches','invites','events','praks'].forEach(k=>S[k]=o[k]||S[k])}}catch(_){}
+    normalizeAfterLoad();
+    if(!S.players.length){S.reg=true;S.pending={nick:'',demo:1}}
+  }
+  render();
+}
+S.players.forEach((p,i)=>{if(!p.gid)p.gid=String(51234000+i*137)});
+S.players.forEach(p=>{if(p.org&&!p.plat)p.plat='ORGANIZER';delete p.org});if(!S.players.some(p=>p.plat=='OWNER')&&S.players[0])S.players[0].plat='OWNER';
+S.events.forEach(e=>{if(!e.stages)e.stages={group:'',playoff:'Bo3',final:'Bo5'};if(e.stages.group&&!e.stages.s1)e.stages.s1='groups';if(!e.groups)e.groups=[];e.fmt=fmtStr(e.stages)});{const e=S.events.find(x=>x.id=='e1');if(e&&!e.bracket&&e.groups.length)genBracket(e,[...e.teams])}{const e=S.events.find(x=>x.id=='e5');if(e&&!e.swiss){e.swiss={teams:[...e.teams],list:[]};swissNext(e)}}
+S.teams.forEach(t=>{if(!t.tag)t.tag=mkTag(t.name)});S.teams.forEach(t=>['OWNER','LEADER'].forEach(rl=>S.players.filter(p=>roleIn(p,t.id)==rl).slice(1).forEach(p=>setRoleIn(p,t.id,'PLAYER'))));
+// Telegram auth: реальная проверка Telegram initData выполняется на сервере.
+const tu=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+if(tu){S.real=true;S.admin=false;S.reg=false;S.pending=null}
+function normalizeAfterLoad(){
+  S.players.forEach(p=>{try{syncP(p)}catch(_){}});
+  S.players.forEach((p,i)=>{if(!p.gid)p.gid=String(51234000+i*137)});
+  S.players.forEach(p=>{if(p.org&&!p.plat)p.plat='ORGANIZER';delete p.org});
+  if(!S.players.some(p=>p.plat=='OWNER')&&S.players[0])S.players[0].plat='OWNER';
+}
+const P=id=>S.players.find(p=>p.id==id),T=id=>S.teams.find(t=>t.id==id),me=()=>P(S.me);
+const kd=p=>(p.k/Math.max(1,p.d)).toFixed(2),gm=p=>p.w+p.l,wr=p=>gm(p)?Math.round(p.w/gm(p)*100):0;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const logo=(t,b)=>`<div class="ava ${b?'big':''}">${t&&t.logo&&t.logo.startsWith('data:')?`<img src="${t.logo}">`:esc(t?t.logo:'?')}</div>`;
+const pav=(p,b)=>`<div class="ava ${b==2?'huge':b?'big':''}">${p.photo?`<img src="${p.photo}">`:esc(p.nick[0].toUpperCase())}</div>`;
+const win=(m,i)=>{let a=0,b=0;m.maps.forEach(x=>x.a>x.b?a++:b++);return i==1?a:b};
+function tstat(id){let w=0,l=0,mw=0,ml=0;allM().filter(m=>!techOf(m)).forEach(m=>{const i=m.t1==id?1:m.t2==id?2:0;if(!i)return;const a=win(m,1),b=win(m,2);(i==1?a>b:b>a)?w++:l++;m.maps.forEach(x=>{(i==1?x.a>x.b:x.b>x.a)?mw++:ml++})});return{w,l,mw,ml,n:w+l,wr:w+l?Math.round(w/(w+l)*100):0}}
+// Игрок может состоять в нескольких командах: p.memberships=[{team,role}].
+// p.team / p.role = "активная" команда (для управления, праков, регистрации на турниры).
+const MAXT=10;
+function mem(p){if(!Array.isArray(p.memberships))p.memberships=[];if(p.team&&!p.memberships.some(m=>m.team==p.team))p.memberships.unshift({team:p.team,role:p.role||'PLAYER'});return p.memberships}
+function roleIn(p,tid){const m=mem(p).find(x=>x.team==tid);return m?m.role:null}
+function syncP(p){const ms=mem(p).filter(m=>T(m.team));p.memberships=ms;const a=ms.find(m=>m.team==p.team)||ms[0]||null;p.team=a?a.team:null;p.role=a?a.role:null}
+function joinTeam(p,tid,role,act){const ms=mem(p),m=ms.find(x=>x.team==tid);if(m)m.role=role;else ms.push({team:tid,role});if(act||!p.team)p.team=tid;syncP(p)}
+function leaveTeam(p,tid){mem(p);p.memberships=p.memberships.filter(m=>m.team!=tid);if(p.team==tid)p.team=null;syncP(p)}
+function setRoleIn(p,tid,r){const m=mem(p).find(x=>x.team==tid);if(m)m.role=r;if(p.team==tid)p.role=r}
+const roster=id=>S.players.filter(p=>roleIn(p,id));
+function mkTag(n){const c=x=>x.replace(/[^\p{L}\p{N}]/gu,'').toUpperCase();let b=c(n.split(/\s+/).map(w=>w[0]||'').join('')).slice(0,4);if(b.length<2)b=(c(n)+'XX').slice(0,3);let t=b,i=2;while(S.teams.some(x=>x.tag==t))t=b.slice(0,3)+i++;return t}
+const tagOk=(g,id)=>/^[\p{L}\p{N}]{2,5}$/u.test(g)&&!S.teams.some(x=>x.id!=id&&String(x.tag).toLowerCase()==g.toLowerCase());
+const rTag=(p,tid)=>{tid=tid||p.team;const r=tid&&roleIn(p,tid);return r&&T(tid)?`<span class="tag ${r}">${r=='PLAYER'?'PLAYER':esc(T(tid).tag)+' · '+(r=='OWNER'?'CEO':'LEADER')}</span>${isRes(p,tid)?' <span class="tag reserve">ЗАПАС</span>':''}`:''};
+const slotsCard=t=>{const o=roster(t.id).find(x=>roleIn(x,t.id)=='OWNER'),l=roster(t.id).find(x=>roleIn(x,t.id)=='LEADER'),row=(rl,x)=>`<div class="row" style="margin-top:6px"><span class="tag ${rl}">${esc(t.tag)} · ${rl=='OWNER'?'CEO':'LEADER'}</span><div class="sp t" style="font-size:14px">${x?esc(x.nick):'<span class="m">свободна</span>'}</div></div>`;return`<div class="card"><div class="m">РОЛИ КОМАНДЫ · по одному игроку на роль</div>${row('OWNER',o)}${row('LEADER',l)}</div>`};
+Object.defineProperty(S,'admin',{get(){const p=me();return !!(p&&(p.plat=='ADMIN'||p.plat=='OWNER'))},set(){}});
+const canOrg=()=>!!(me()&&me().plat);
+const canEditEv=e=>!!(S.admin||(me()&&me().plat=='ORGANIZER'&&e.by==me().id));
+const platTag=p=>p.plat?` <span class="tag org">${{ORGANIZER:'ОРГАНИЗАТОР',ADMIN:'АДМИН',OWNER:'ВЛАДЕЛЕЦ'}[p.plat]}</span>`:'';
+const allM=()=>[...S.matches,...S.praks.filter(x=>x.status=='done')];
+// VRS-очки команд: старт 1000, Elo-подобный расчёт по матчам в хронологическом порядке
+function vrs(){const P0={};S.teams.forEach(t=>P0[t.id]={p:1000,d:0});allM().filter(m=>!techOf(m)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(m=>{const a=P0[m.t1],b=P0[m.t2];if(!a||!b)return;const w1=win(m,1),w2=win(m,2),e=1/(1+Math.pow(10,(b.p-a.p)/400)),sc=w1>w2?1:w1<w2?0:.5,mu=1+.25*Math.max(0,Math.abs(w1-w2)-1),d=Math.round(32*mu*(sc-e));a.p+=d;b.p-=d;a.d=d;b.d=-d});return P0}
+const teamsSorted=()=>{const v=vrs();return[...S.teams].sort((a,b)=>v[b.id].p-v[a.id].p)};
+const rank=id=>teamsSorted().findIndex(t=>t.id==id)+1;
+const vcard=id=>{const v=vrs()[id]||{p:1000,d:0};return`<div class="card row" style="background:linear-gradient(90deg,#ff5a1f33,var(--bg2))"><div class="rk r${rank(id)}">#${rank(id)}</div><div class="sp"><div class="m">VRS ОЧКИ</div><div class="t" style="font-size:26px">${v.p}</div></div><div class="m ${v.d>0?'pos':v.d<0?'neg':''}">${v.d>0?'▲ +'+v.d:v.d<0?'▼ '+v.d:''}</div></div>`};
+function vrsInfo(){sh.innerHTML=`<div class="sheet" onclick="if(event.target==this)sh.innerHTML=''"><div><div class="t" style="font-size:18px;margin-bottom:10px">Как считаются VRS-очки</div><div class="m" style="font-size:14px;line-height:1.6">• Каждая команда стартует с <b>1000</b> очков.<br>• Матчи считаются по дате, от старых к новым.<br>• Для матча считается шанс победы по разнице очков команд.<br>• Изменение = 32 × бонус × (результат − шанс). Победа над сильной командой даёт больше очков, над слабой — меньше.<br>• Бонус за счёт по картам: 2-1 → ×1, 2-0 → ×1.25, 3-0 → ×1.5.<br>• Что команда выиграла, столько соперник потерял.<br>• Праки тоже считаются: после игры команда нажимает «Завершить матч» и прикладывает скриншот.<br>• ▲/▼ — изменение за последний матч.</div><button class="btn g" onclick="sh.innerHTML=''">Понятно</button></div></div>`}
+const canManage=()=>{const p=me();return p&&p.team&&(p.role=='OWNER'||p.role=='LEADER')};
+const go=(p,id)=>{S.hist.push(S.route);S.route={p,id};if(p=='event')S.etab='over';S.q='';render();scrollTo(0,0)};
+const tab=p=>{S.hist=[];S.route={p};S.q='';render();scrollTo(0,0)};
+const back=()=>{S.route=S.hist.pop()||{p:'home'};render()};
+const toast=m=>{if(tg&&tg.showAlert)try{tg.showAlert(m);return}catch(e){}alert(m)};
+function sheet(title,fields,ok,okText){const h=fields.map(f=>`<label>${f.l}</label>`+(f.t=='select'?`<select id="f_${f.k}">${f.o.map(o=>`<option value="${o[0]}" ${o[0]==f.v?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`:f.t=='area'?`<textarea id="f_${f.k}" rows="4" placeholder="${esc(f.ph||'')}">${esc(f.v||'')}</textarea>`:f.t=='file'?`<input type="file" id="f_${f.k}" accept="image/*">`:`<input id="f_${f.k}" type="${f.t||'text'}" value="${esc(f.v??'')}" placeholder="${esc(f.ph||'')}">`)).join('');
+sh.innerHTML=`<div class="sheet" onclick="if(event.target==this)sh.innerHTML=''"><div><div class="t" style="font-size:18px;margin-bottom:10px">${title}</div>${h}<button class="btn" id="okb">${okText||'Сохранить'}</button><button class="btn g" onclick="sh.innerHTML=''">Отмена</button></div></div>`;
+document.getElementById('okb').onclick=async()=>{const v={};for(const f of fields){const e=document.getElementById('f_'+f.k);if(f.t=='file'){v[f.k]=e.files[0]?await new Promise(r=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=128;c.getContext('2d').drawImage(im,0,0,128,128);r(c.toDataURL('image/jpeg',.8))};im.src=fr.result};fr.readAsDataURL(e.files[0])}):null}else v[f.k]=e.value}if(ok(v)!==false){sh.innerHTML='';save();render()}}}
+const sh=document.getElementById('sh');
+const regView=()=>{const q=S.pending||{};return`<div class="hero" style="margin-top:6px"><div class="m">РЕГИСТРАЦИЯ</div><h1>Создай профиль<br><span>TOPOFF RANKED</span></h1><p class="m" style="margin-top:8px">Чтобы пользоваться приложением, укажите ник и ваш игровой ID. Один аккаунт — один профиль.</p></div><h2>Данные профиля</h2><label>Игровой ник</label><input id="rn" maxlength="16" value="${esc(q.nick)}" placeholder="Ник"><label>Game ID (буквы и цифры, 3–20 символов)</label><input id="rg" maxlength="20" autocapitalize="off" autocomplete="off" placeholder="Например, A1B2C3D4"><div class="m" style="margin-bottom:8px">ID должен быть уникальным. Изменить его потом сможет только администратор.</div><button class="btn" onclick="doReg()">Зарегистрироваться</button>${(!tg||!tg.initData)?'<div class="card m" style="margin-top:10px;color:var(--bad)">⚠️ Приложение открыто не из Telegram, поэтому регистрация не сработает. Откройте мини-приложение через вашего бота в Telegram.</div>':''}${q.demo&&me()?'<button class="btn g" onclick="S.reg=false;S.pending=null;render()">Отмена (демо)</button>':''}`};
+async function doReg(){const g=i=>document.getElementById(i).value.trim(),n=g('rn'),id=g('rg');if(n.length<2||n.length>16)return toast('Ник: 2–16 символов');if(!/^[\p{L}\p{N}]{3,20}$/u.test(id))return toast('Game ID: 3–20 символов, только буквы и цифры');if(!tg||!tg.initData)return toast('Откройте Topoff Ranked внутри Telegram');try{const d=await apiJson('/register',{method:'POST',body:JSON.stringify({nick:n,gid:id})});if(d.player){S.players.push(d.player);S.me=d.player.id;S.reg=false;S.pending=null;S.hist=[];S.route={p:'home'};render();toast('Регистрация завершена');}else{toast('Не удалось создать профиль')}}catch(e){toast(e.message)}}
+function render(){if(!S.reg&&!me()){S.reg=true;S.pending=S.pending||{nick:''}}if(S.reg){hd.innerHTML='<div class="logo">TOPOFF <b>RANKED</b></div>';nav.style.display='none';app.innerHTML=regView();return}nav.style.display='flex';const r=S.route,p=me();const titles={home:'',players:'Игроки',teams:'Команды',matches:'Матчи',player:'Профиль игрока',team:'Профиль команды',me:'Мой профиль',manage:'Управление командой',events:'Эвенты',event:'Эвент',admin:'Админ-панель',match:'Матч'};
+hd.innerHTML=(S.hist.length?`<button class="back" onclick="back()">‹</button>`:'')+`<div class="logo">TOPOFF <b>RANKED</b></div><div class="sp"></div><div class="m">${esc(titles[r.p])}</div>`;
+nav.innerHTML=[['home','🏠','Главная'],['players','👤','Игроки'],['teams','🛡️','Команды'],['matches','🎯','Матчи'],['events','📅','Эвенты'],['me','😎','Профиль']].map(n=>`<button class="${r.p==n[0]||(r.p=='player'&&n[0]=='players')||(r.p=='team'&&n[0]=='teams')||(r.p=='manage'&&n[0]=='me')||(r.p=='event'&&n[0]=='events')||(r.p=='match'&&n[0]=='matches')?'on':''}" onclick="tab('${n[0]}')"><span>${n[1]}</span>${n[2]}</button>`).join('');
+app.innerHTML=(V[r.p]||V.home)(r.id)}
+const stL={live:'🔴 LIVE',reg:'📝 РЕГИСТРАЦИЯ',done:'ЗАВЕРШЁН'};
+const evById=id=>S.events.find(e=>e.id==id);
+const evCard=e=>`<div class="card click" onclick="go('event','${e.id}')"><div class="row"><div class="sp"><div class="t">${esc(e.name)}</div><div class="m">📅 ${e.date} · ${esc(e.fmt)}</div></div><span class="tag ${e.status}">${stL[e.status]}</span></div><div class="row" style="margin-top:10px"><div class="m">🏆 ${esc(e.prize)}</div><div class="sp"></div><div class="m">${e.teams.length}/${e.max} команд</div></div><div style="height:5px;background:var(--bg3);border-radius:4px;margin-top:6px"><div style="height:5px;border-radius:4px;background:linear-gradient(90deg,var(--ac),var(--ac2));width:${Math.min(100,e.teams.length/e.max*100)}%"></div></div></div>`;
+const homeEv=()=>{const a=S.events.filter(e=>e.status!='done').slice(0,2);return a.length?`<h2>Эвенты</h2>${a.map(evCard).join('')}<button class="btn g" onclick="tab('events')">Все эвенты →</button>`:''};
+const prakUp=x=>`<div class="card"><div class="row"><div class="sp"><div class="t">${esc(T(x.t1).name)} <span class="m">vs</span> ${esc(T(x.t2).name)}</div><div class="m">📅 ${x.date} ${x.time} · ${esc(x.fmt)}</div></div><span class="tag reg">ПРАКА</span></div></div>`;
+const MAP_POOL=['Zona 9','Sakura','Sandstone','Rust','Province','Breeze'];
+const mapName=n=>{const k=String(n).trim().toLowerCase().replace(/\s+/g,' ');return MAP_POOL.find(m=>m.toLowerCase()==k)||(k=='тп'?'ТП':k=='ап'?'АП':null)};
+const parseMaps=t=>{parseMaps.err='';const rows=t.split('\n').map(s=>s.trim().match(/^(.+?)\s+(\d+)\s*[-:]\s*(\d+)$/)).filter(Boolean).map(x=>({map:mapName(x[1]),raw:x[1],a:+x[2],b:+x[3]}));const bad=rows.filter(x=>!x.map).map(x=>x.raw);if(bad.length){parseMaps.err='Нет в пуле карт: '+bad.join(', ')+'. Доступны: '+MAP_POOL.join(', ');return[]}return rows.map(x=>({map:x.map,a:x.a,b:x.b}))};
+function prakTab(mt){const pr=S.praks.filter(x=>x.t1==mt||x.t2==mt),opp=x=>T(x.t1==mt?x.t2:x.t1);
+const card=(x,btn)=>`<div class="card"><div class="row">${logo(opp(x))}<div class="sp"><div class="t">${esc(opp(x).name)}</div><div class="m">📅 ${x.date} ${x.time} · ${esc(x.fmt)}</div>${x.note?`<div class="m">💬 ${esc(x.note)}</div>`:''}</div></div><div class="row" style="margin-top:8px;flex-wrap:wrap">${btn}</div></div>`;
+const sec=(t,a,f)=>a.length?`<h2>${t}</h2>`+a.map(f).join(''):'';
+return`<button class="btn" style="margin:0 0 4px" onclick="prakNew()">➕ Вызвать команду на праку</button><div class="m">После праки нажмите «Завершить матч», приложите скриншот и введите статистику — VRS-очки и статистика игроков обновятся.</div>`
++sec('📥 Входящие вызовы',pr.filter(x=>x.status=='pending'&&x.t2==mt),x=>card(x,`<button class="btn s" onclick="prakAns('${x.id}',1)">Принять</button><button class="btn s d" onclick="prakAns('${x.id}',0)">Отклонить</button>`))
++sec('📤 Ожидают ответа',pr.filter(x=>x.status=='pending'&&x.t1==mt),x=>card(x,`<span class="tag LEADER">⏳ ЖДЁМ ОТВЕТА</span><button class="btn s g" onclick="prakCancel('${x.id}')">Отменить</button>`))
++sec('✅ Подтверждённые',pr.filter(x=>x.status=='accepted'),x=>card(x,`<button class="btn s c" onclick="prakFinish('${x.id}')">🏁 Завершить матч</button><button class="btn s d" onclick="prakCancel('${x.id}')">Отменить</button>`))
++sec('История праков',pr.filter(x=>x.status=='done'),x=>matchCard(x)+`<div style="margin:-4px 0 12px"><button class="btn s g" onclick="shotView('${x.id}')">📸 Скриншот</button></div>`)}
+const matchCardX=(m,nl)=>{const a=T(m.t1),b=T(m.t2);return`<div class="card ${nl?'':'click'}" ${nl?'':`onclick="go('match','${m.id}')"`}><div class="row"><div class="sp click" onclick="event.stopPropagation();go('team','${a.id}')" style="text-align:center">${logo(a).replace('class="ava"','class="ava" style="margin:auto"')}<div class="t" style="font-size:13px;margin-top:4px">${esc(a.name)}</div></div><div style="text-align:center"><div class="score"><span class="${win(m,1)>win(m,2)?'pos':''}">${win(m,1)}</span> : <span class="${win(m,2)>win(m,1)?'pos':''}">${win(m,2)}</span></div><div class="m">${m.date}${m.status=='done'?' · прака':''}${techOf(m)?' · '+techOf(m):''}${m.shot||(m.maps||[]).some(x=>x.shot)?' · 📸':''}${m.ev&&evById(m.ev)?' · '+esc(evById(m.ev).name):''}${m.round?' · '+esc(m.round):m.grp?' · Группа '+esc(m.grp):''}</div></div><div class="sp click" onclick="event.stopPropagation();go('team','${b.id}')" style="text-align:center">${logo(b).replace('class="ava"','class="ava" style="margin:auto"')}<div class="t" style="font-size:13px;margin-top:4px">${esc(b.name)}</div></div></div><div style="margin-top:8px">${m.maps.map(x=>`<div class="map"><span>🗺 ${esc(x.map)}</span><b><span class="${x.a>x.b?'pos':''}">${x.a}</span> : <span class="${x.b>x.a?'pos':''}">${x.b}</span></b></div>`).join('')}</div></div>`};
+const matchCard=m=>matchCardX(m,0);
+const playerRow=p=>`<div class="card click row" onclick="go('player','${p.id}')">${pav(p)}<div class="sp"><div class="t">${esc(p.nick)}</div><div class="m">${p.team&&T(p.team)?esc(T(p.team).name)+(mem(p).length>1?' +'+(mem(p).length-1):''):'Без команды'}</div></div><div style="text-align:right"><div class="t">${kd(p)}</div><div class="m">K/D · ${wr(p)}% WR</div></div></div>`;
+const teamRow=t=>{const s=tstat(t.id);return`<div class="card click row" onclick="go('team','${t.id}')"><div class="rk r${rank(t.id)}">#${rank(t.id)}</div>${logo(t)}<div class="sp"><div class="t">${esc(t.name)} <span class="m">[${esc(t.tag||'')}]</span></div><div class="m">${roster(t.id).length} игроков · ${s.w}W / ${s.l}L</div></div><div style="text-align:right"><div class="t" style="color:var(--ac)">${(vrs()[t.id]||{p:1000}).p}</div><div class="m ${(vrs()[t.id]||{d:0}).d>0?'pos':(vrs()[t.id]||{d:0}).d<0?'neg':''}">${(vrs()[t.id]||{d:0}).d>0?'▲ +'+vrs()[t.id].d:(vrs()[t.id]||{d:0}).d<0?'▼ '+vrs()[t.id].d:'VRS'}</div></div></div>`};
+const stats=p=>`<div class="grid"><div class="st"><b>${kd(p)}</b><span>K/D</span></div><div class="st"><b>${(+p.adr).toFixed(1)}</b><span>ADR</span></div><div class="st"><b>${wr(p)}%</b><span>Winrate</span></div><div class="st"><b>${gm(p)}</b><span>Матчи</span></div><div class="st"><b class="pos">${p.w}</b><span>Победы</span></div><div class="st"><b class="neg">${p.l}</b><span>Поражения</span></div></div>`;
+const search=ph=>`<input placeholder="🔎 ${ph}" value="${esc(S.q)}" oninput="S.q=this.value;sub()" id="q">`;
+function sub(){const r=S.route.p;const q=S.q.toLowerCase();const el=document.getElementById('list');if(!el)return;el.innerHTML=r=='players'?S.players.filter(p=>p.nick.toLowerCase().includes(q)||String(p.gid).toLowerCase().includes(q)).map(playerRow).join('')||'<div class="m">Ничего не найдено</div>':teamsSorted().filter(t=>(t.name+' '+t.tag).toLowerCase().includes(q)).map(teamRow).join('')||'<div class="m">Ничего не найдено</div>'}
+const V={
+match(id){const m=allM().find(x=>x.id==id);if(!m||!T(m.t1)||!T(m.t2))return'<div class="card">Матч не найден</div>';const tk=techOf(m),cs=canShot(m);
+let h=matchCardX(m,1);
+if(tk)return h+`<div class="card m">⚖️ ${tk=='ТП'?'Техническое поражение':'Автопоражение'}: результат присуждён организатором, скриншотов нет.</div>`;
+h+=`<h2>Карты и скриншоты</h2>`+m.maps.map((x,i)=>`<div class="card"><div class="row"><div class="sp t">🗺 Карта ${i+1}: ${esc(x.map)}</div><b><span class="${x.a>x.b?'pos':''}">${x.a}</span> : <span class="${x.b>x.a?'pos':''}">${x.b}</span></b></div>${x.shot?`<img class="shot" src="${x.shot}" onclick="shotZoom('${m.id}',${i})">`:`<div class="m" style="margin-top:6px">Скриншот не загружен</div>`}${cs?`<div class="row" style="margin-top:8px;flex-wrap:wrap"><button class="btn s c" onclick="shotPick('${m.id}',${i})">📸 ${x.shot?'Заменить':'Загрузить'} скриншот</button>${x.shot?`<button class="btn s d" onclick="shotDel('${m.id}',${i})">Удалить</button>`:''}</div>`:''}</div>`).join('');
+if(m.shot&&!m.maps.some(x=>x.shot))h+=`<h2>Скриншот матча</h2><div class="card"><img class="shot" src="${m.shot}" onclick="shotZoom('${m.id}',-1)"></div>`;
+return h},
+home(){const top=[...S.players].filter(p=>gm(p)>=10).sort((a,b)=>b.k/b.d-a.k/a.d).slice(0,3);return`<div class="hero"><div class="m">СТАТИСТИКА СООБЩЕСТВА</div><h1>TOPOFF<br><span>RANKED</span></h1><p class="m" style="margin-top:8px">Игроки, команды и результаты матчей в одном месте.</p></div>
+<div class="grid" style="margin-top:12px"><div class="st"><b>${S.players.length}</b><span>Игроков</span></div><div class="st"><b>${S.teams.length}</b><span>Команд</span></div><div class="st"><b>${S.matches.length}</b><span>Матчей</span></div></div>
+${homeEv()}<h2>Последние матчи</h2>${S.matches.slice(0,2).map(matchCard).join('')}<button class="btn g" onclick="tab('matches')">Все матчи →</button>
+<h2>Лучший K/D</h2>${top.map(playerRow).join('')}<h2>Топ команд · VRS</h2>${teamsSorted().map(teamRow).join('')}<button class="btn g" onclick="vrsInfo()">ℹ️ Как считаются VRS-очки</button>`},
+players(){return search('Поиск игрока по нику или ID')+`<div id="list">${S.players.filter(p=>p.nick.toLowerCase().includes(S.q.toLowerCase())||String(p.gid).toLowerCase().includes(S.q.toLowerCase())).map(playerRow).join('')}</div>`},
+teams(){return `<div class="row" style="margin-bottom:8px"><h2 style="margin:0" class="sp">🏆 Топ команд · VRS</h2><button class="btn s g" onclick="vrsInfo()">ℹ️ Как считаются</button></div>`+search('Поиск команды')+`<div id="list">${teamsSorted().filter(t=>(t.name+' '+t.tag).toLowerCase().includes(S.q.toLowerCase())).map(teamRow).join('')}</div>`},
+matches(){const pk=S.praks.filter(x=>x.status=='accepted'||x.status=='done');return(S.matches.map(matchCard).join('')||'<div class="m">Матчей пока нет</div>')+(pk.length?`<h2>🤝 Праки</h2>`+pk.map(x=>x.status=='done'?matchCard(x):prakUp(x)).join(''):'')},
+player(id){const p=P(id);if(!p)return'';
+const all=pst(p),lim=new Date(Date.now()-90*864e5).toISOString().slice(0,10),f3=S.pf=='3m',ents=f3?all.filter(e=>e.x.date>=lim):all;
+let k,d,adr,w,l;
+if(f3){k=ents.reduce((s,e)=>s+e.z.k,0);d=ents.reduce((s,e)=>s+e.z.d,0);adr=ents.length?ents.reduce((s,e)=>s+e.z.a,0)/ents.length:0;w=ents.filter(e=>e.z.r=='w').length;l=ents.filter(e=>e.z.r=='l').length}else{k=p.k;d=p.d;adr=+p.adr;w=p.w;l=p.l}
+const n=w+l,kdv=k/Math.max(1,d),rt=rate(k,d,adr),wrv=n?Math.round(w/n*100):0;
+const col=(v,lo,hi)=>v>=hi?'cg':v<lo?'cr':'cy';
+const sc=(c,b,s)=>`<div class="sc ${c}"><b>${b}</b><span>${s}</span></div>`;
+const t=p.team&&T(p.team),ach=playerAch(p),champs=ach.filter(x=>x.p.lo==1).length;
+const mates=t?roster(t.id).filter(x=>x.id!=p.id):[];
+const rows=ents.slice().reverse().map(({x,z})=>{const opp=T(roleIn(p,x.t1)?x.t2:x.t1),r=rate(z.k,z.d,z.a);return`<tr onclick="go('match','${x.id}')"><td>${x.date.slice(5)}</td><td>${opp?esc(opp.tag):'?'}</td><td>${z.k}</td><td>${z.d}</td><td>${(z.k/Math.max(1,z.d)).toFixed(2)}</td><td>${z.a}</td><td class="${r>=1.05?'pos':r<.95?'neg':''}">${r}</td><td>${z.r=='w'?'<b class="pos">W</b>':z.r=='l'?'<b class="neg">L</b>':'='}</td></tr>`}).join('');
+return`<div class="card" style="background:radial-gradient(circle at 90% 0,#ff5a1f33,transparent 60%),var(--bg2)"><div class="row" style="align-items:flex-start">${pav(p,2)}<div class="sp"><div class="t" style="font-size:26px;line-height:1.1">${esc(p.nick)}</div><div class="m">🆔 ${esc(p.gid)}${platTag(p)}</div>${champs?`<span class="tag OWNER" style="display:inline-block;margin-top:6px">🏆 ${champs}× чемпион</span>`:''}<div style="margin-top:8px">${mem(p).filter(m=>T(m.team)).map(m=>{const x=T(m.team);return`<div class="click row" style="margin-bottom:4px" onclick="go('team','${x.id}')">${logo(x).replace('class="ava"','class="ava" style="width:26px;height:26px;font-size:14px;border-radius:8px"')}<div class="t" style="font-size:14px">${esc(x.name)} ${rTag(p,x.id)}</div></div>`}).join('')||'<div class="m">Свободный агент</div>'}</div></div></div></div>
+<div class="row" style="margin-bottom:8px"><div class="m sp">Статистика за период:</div><button class="btn s ${f3?'g':''}" onclick="S.pf='all';render()">Всё время</button><button class="btn s ${f3?'':'g'}" onclick="S.pf='3m';render()" style="margin-left:6px">3 месяца</button></div>
+<div class="sc ${col(rt,.95,1.05)}" style="margin-bottom:8px"><b style="font-size:24px">Rating: ${rt.toFixed(2)}</b></div>
+<div class="grid" style="margin-bottom:8px">${sc(col(kdv,.95,1.05),kdv.toFixed(2),'K/D')}${sc(col(adr,60,75),adr.toFixed(1),'ADR')}${sc(col(wrv,45,55),wrv+'%','Winrate')}</div>
+<div class="grid" style="margin-bottom:8px">${sc('cn',k,'K')}${sc('cn',d,'D')}${sc(k-d>=0?'cg':'cr',(k-d>0?'+':'')+(k-d),'K/D diff')}</div>
+<div class="grid">${sc('cn',n,'Матчи')}${sc('cn',w+' / '+l,'W / L')}${sc(w-l>=0?'cg':'cr',(w-l>0?'+':'')+(w-l),'W/L diff')}</div>
+<div class="m" style="margin-top:6px">Rating = 0.6·K/D + 0.4·ADR/75. За 3 месяца — только матчи праков со статистикой.</div>
+${mates.length?`<h2>Тиммейты · ${esc(t.name)}</h2><div class="grid" style="grid-template-columns:repeat(4,1fr)">${mates.map(x=>`<div class="st click" onclick="go('player','${x.id}')">${pav(x).replace('class="ava"','class="ava" style="margin:0 auto 4px"')}<div class="t" style="font-size:12px;overflow:hidden;text-overflow:ellipsis">${esc(x.nick)}</div></div>`).join('')}</div>`:''}
+${ach.length?`<h2>🏅 Награды</h2><div class="br" style="gap:8px">${ach.map(x=>`<div class="st click" style="min-width:120px" onclick="go('event','${x.e.id}')"><div style="font-size:30px">${medal(x.p)}</div><div class="t" style="font-size:12px">${esc(x.e.name)}</div><div class="m">${plc(x.p)} место</div></div>`).join('')}</div>`:''}
+<h2>Стабильность игрока</h2>${chartP(ents)}
+<h2>Матчи игрока</h2>${rows?`<div class="card"><table class="tb"><tr><th>дата</th><th>соп.</th><th>K</th><th>D</th><th>K/D</th><th>ADR</th><th>rating</th><th></th></tr>${rows}</table></div>`:'<div class="m">Нет матчей со статистикой</div>'}`},
+team(id){const t=T(id);if(!t)return'';
+const f3=S.tf=='3m',lim=new Date(Date.now()-90*864e5).toISOString().slice(0,10);
+const ms0=allM().filter(m=>(m.t1==id||m.t2==id)&&!techOf(m)),ms=f3?ms0.filter(m=>m.date>=lim):ms0;
+let mw=0,ml=0,rw=0,rl=0;const mp={};
+ms.forEach(m=>{const i=m.t1==id?1:2;m.maps.forEach(x=>{const my=i==1?x.a:x.b,op=i==1?x.b:x.a;rw+=my;rl+=op;const r=mp[x.map]=mp[x.map]||{w:0,l:0};if(my>op){mw++;r.w++}else{ml++;r.l++}})});
+const v=vrs()[id]||{p:1000,d:0},sc=(c,b,s)=>`<div class="sc ${c}"><b>${b}</b><span>${s}</span></div>`,df=(a,b)=>(a-b>0?'+':'')+(a-b);
+const ord={OWNER:0,LEADER:1,PLAYER:2},rs=roster(id).sort((a,b)=>(isRes(a,id)-isRes(b,id))||ord[roleIn(a,id)]-ord[roleIn(b,id)]);
+const prt=p=>{if(!f3)return rate(p.k,p.d,+p.adr);const e=pst(p).filter(z=>z.x.date>=lim);if(!e.length)return null;return rate(e.reduce((s,z)=>s+z.z.k,0),e.reduce((s,z)=>s+z.z.d,0),e.reduce((s,z)=>s+z.z.a,0)/e.length)};
+const tileF=p=>{const r=prt(p),c=r==null?'cn':r>=1.05?'cg':r<.95?'cr':'cy';return`<div class="click" style="min-width:84px;text-align:center" onclick="go('player','${p.id}')">${pav(p,1).replace('class="ava big"','class="ava big" style="margin:0 auto 4px"')}<div class="t" style="font-size:12px;overflow:hidden;text-overflow:ellipsis">${esc(p.nick)}</div><div class="sc ${c}" style="padding:3px;margin-top:3px;border-radius:0 0 8px 8px"><b style="font-size:14px">${r==null?'—':r.toFixed(2)}</b></div></div>`};const tiles=rs.filter(p=>!isRes(p,id)).map(tileF).join(''),resT=rs.filter(p=>isRes(p,id)).map(tileF).join('');
+const champs=teamAch(id).filter(x=>x.p.lo==1).length,ach=teamAch(id);
+const mrows=Object.entries(mp).sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).map(([n,r])=>{const g=r.w+r.l,wr=Math.round(r.w/g*100);return`<tr><td style="text-align:left;font-weight:700">${esc(n)}</td><td class="${wr>=55?'pos':wr<45?'neg':''}">${wr}%</td><td>${g}</td><td class="pos">${r.w}</td><td class="neg">${r.l}</td></tr>`}).join('');
+const hist=allM().filter(m=>m.t1==id||m.t2==id).sort((a,b)=>a.date<b.date?1:-1);
+return`<div class="row" style="margin-bottom:8px"><div class="m sp">Статистика за период:</div><button class="btn s ${f3?'g':''}" onclick="S.tf='all';render()">Всё время</button><button class="btn s ${f3?'':'g'}" onclick="S.tf='3m';render()" style="margin-left:6px">3 месяца</button></div>
+<div class="card" style="background:radial-gradient(circle at 50% 0,#ff5a1f33,transparent 65%),var(--bg2)">${champs?`<div style="text-align:right"><span class="tag OWNER">🏆 ${champs}× чемпион</span></div>`:''}<div class="br" style="gap:10px;margin:6px 0 0;justify-content:${rs.length>4?'flex-start':'center'}">${tiles||'<div class="m">В основе пока нет игроков</div>'}</div></div>${resT?`<h2>Запасные игроки</h2><div class="card"><div class="br" style="gap:10px;margin:0">${resT}</div></div>`:''}
+<div class="card row">${logo(t,1)}<div class="sp"><div class="t" style="font-size:22px">${esc(t.name)} <span class="m">[${esc(t.tag)}]</span></div><div class="m">${esc(t.desc)}</div></div><div style="text-align:right"><div class="rk r${rank(id)}" style="width:auto;font-size:22px">#${rank(id)}</div></div></div>
+<div class="grid" style="margin-bottom:8px">${sc('cn',v.p+(v.d?` <small class="${v.d>0?'pos':'neg'}">${v.d>0?'▲+':'▼'}${v.d}</small>`:''),'Points (VRS)')}${sc('cn',mw,'WMaps')}${sc('cn',ml,'LMaps')}</div>
+<div class="grid">${sc(mw-ml>=0?'cg':'cr',df(mw,ml),'Diff maps')}${sc('cn',rw,'WRounds')}${sc('cn',rl,'LRounds')}</div>
+<div class="grid" style="margin-top:8px;grid-template-columns:1fr 2fr">${sc(rw-rl>=0?'cg':'cr',df(rw,rl),'Diff rounds')}<div class="sc cn"><b>${ms.length?Math.round(ms.filter(m=>win(m,m.t1==id?1:2)>win(m,m.t1==id?2:1)).length/ms.length*100)+'%':'—'}</b><span>Winrate матчей · ${ms.length} матч.</span></div></div>
+<div class="row" style="margin-top:10px"><button class="btn s g" onclick="vrsInfo()">ℹ️ Как считаются VRS</button></div>
+${canManage()&&!roleIn(me(),id)?`<button class="btn c" style="margin:10px 0 0" onclick="prakNew('${id}')">🤝 Вызвать на праку</button>`:''}
+${ach.length?`<h2>🏅 Награды</h2><div class="br" style="gap:8px">${ach.map(x=>`<div class="st click" style="min-width:120px" onclick="go('event','${x.e.id}')"><div style="font-size:30px">${medal(x.p)}</div><div class="t" style="font-size:12px">${esc(x.e.name)}</div><div class="m">${plc(x.p)} место</div></div>`).join('')}</div>`:''}
+<h2>Динамика ранга</h2><div class="t" style="color:var(--ac2);margin-bottom:6px">Текущий ранг: #${rank(id)}</div>${chartR(rankHist(id))}
+<h2>Статистика по картам</h2>${mrows?`<div class="card"><table class="tb mt"><tr><th style="text-align:left">Карта</th><th>Win rate</th><th>Сыграно</th><th>Победы</th><th>Пор.</th></tr>${mrows}</table></div>`:'<div class="m">Нет сыгранных карт</div>'}
+${slotsCard(t)}<h2>Состав</h2>${rs.map(p=>`<div class="card click row" onclick="go('player','${p.id}')">${pav(p)}<div class="sp"><div class="t">${esc(p.nick)} ${rTag(p,id)}</div><div class="m">K/D ${kd(p)} · ADR ${(+p.adr).toFixed(1)} · ${wr(p)}% WR</div></div>${mgrOf(id)?`<button class="btn s ${isRes(p,id)?'c':'g'}" onclick="event.stopPropagation();resToggle('${p.id}','${id}')">${isRes(p,id)?'⬆ В основу':'⬇ В запас'}</button>`:''}</div>`).join('')}<h2>История матчей</h2>${hist.map(matchCard).join('')||'<div class="m">Нет матчей</div>'}`},
+events(){const g=(st,t)=>{const a=S.events.filter(e=>e.status==st);return a.length?`<h2>${t}</h2>`+a.map(evCard).join(''):''};return(canOrg()?`<button class="btn" style="margin:0 0 4px" onclick="evCreate()">➕ Создать турнир</button>`:`<div class="m" style="margin-bottom:8px">🔒 Создавать турниры могут только организаторы — роль выдаёт администрация.</div>`)+(g('live','🔴 Идут сейчас')+g('reg','📝 Открыта регистрация')+g('done','Завершённые'))||'<div class="m">Эвентов пока нет</div>'},
+event(id){const e=evById(id);if(!e)return'';const tb=evTabs(e);if(S.etab=='qual'&&e.stages.q)return tb+swissView(e,true);if(S.etab=='grp'&&e.stages.s1)return tb+(e.stages.q&&!e.qdone?evHead(e)+'<div class="card m">Основной этап начнётся после завершения квалификации.</div>':e.stages.s1=='swiss'?swissView(e):groupsView(e));if(S.etab=='po')return tb+bracketView(e);const p=me(),reg=p.team&&e.teams.includes(p.team),full=e.teams.length>=e.max;let a='';
+if(e.status=='reg'){if(canManage())a=reg?`<button class="btn d" onclick="evUnreg('${e.id}')">Отменить регистрацию команды</button>`:full?`<button class="btn g" disabled>Мест нет</button>`:roster(p.team).length<5?`<button class="btn g" disabled>Нужно минимум 5 игроков (сейчас ${roster(p.team).length})</button>`:`<button class="btn" onclick="evReg('${e.id}')">📝 Зарегистрировать команду</button>`;else a=`<div class="card m">${p.team?'Регистрировать команду могут только OWNER и LEADER.':'Чтобы участвовать, вступите в команду или создайте свою.'}</div>`}
+return tb+`<div class="card" style="background:radial-gradient(circle at 90% 0,#ff5a1f44,transparent 60%),var(--bg2)"><span class="tag ${e.status}">${stL[e.status]}</span><div class="t" style="font-size:22px;margin:8px 0 4px">${esc(e.name)}</div><div class="m">${esc(e.desc)}</div></div><div class="grid"><div class="st"><b style="font-size:15px">${e.date}</b><span>Старт</span></div><div class="st"><b style="font-size:15px">${esc(e.prize)}</b><span>Призовой</span></div><div class="st"><b style="font-size:15px">${e.teams.length}/${e.max}</b><span>Команды</span></div></div><div class="card m" style="margin-top:10px">⚙️ Формат: ${esc(e.fmt)}<br>👥 Для участия нужно минимум 5 игроков в команде<br>👤 Организатор: ${esc(P(e.by)?P(e.by).nick:'Topoff Ranked')}</div>${a}${canEditEv(e)?mgrCard(e):''}${placesCard(e)}<h2>Участники</h2>${e.teams.map(T).filter(Boolean).map(t=>teamRow(t)+(roster(t.id).length<5&&e.status=='reg'?'<div class="m neg" style="margin:-4px 0 8px">⚠️ В команде меньше 5 игроков</div>':'')+(canEditEv(e)?`<div style="margin:-4px 0 10px">${e.dq&&e.dq[t.id]?`<div class="m neg" style="margin-bottom:6px">⛔ ${e.dq[t.id].kind=='АП'?'АП — автопоражение во всех матчах (снята с турнира)':'ТП — техническое поражение в ближайшем матче'}</div>`:''}${e.status=='live'?`<button class="btn s c" onclick="evDq('${e.id}','${t.id}')">⛔ ТП / АП</button> `:''}<button class="btn s d" onclick="evKick('${e.id}','${t.id}')">Исключить из турнира</button></div>`:'')).join('')||'<div class="m">Пока никто не зарегистрирован</div>'}${(()=>{const em=S.matches.filter(m=>m.ev==e.id);return em.length?`<h2>Матчи турнира</h2>`+em.map(m=>matchCard(m)+(canEditEv(e)&&!['playoff','lower','final','third','swiss','qual'].includes(m.stage)?`<div style="margin:-4px 0 12px"><button class="btn s d" onclick="del('matches','${m.id}')">🗑 Удалить матч</button></div>`:'')).join(''):''})()}`},
+me(){const p=me();const t=p.team&&T(p.team);const inv=S.invites.filter(i=>i.to==p.id&&T(i.team)&&!roleIn(p,i.team));let h=`<div class="row" style="margin-bottom:14px">${pav(p,1)}<div class="sp"><div class="t" style="font-size:22px">${esc(p.nick)}</div><div class="m">🆔 Game ID: ${esc(p.gid)}${platTag(p)}</div><div class="m">${S.real?'✈️ Telegram-авторизация':'Демо-режим (вне Telegram)'}${t?' · '+esc(t.name):''}</div></div></div>${stats(p)}${achCard(playerAch(p))}`;
+if(inv.length)h+=`<h2>Приглашения</h2>`+inv.map(i=>`<div class="card row"><div class="sp"><div class="t">${esc(T(i.team).name)}</div><div class="m">приглашает вас в команду</div></div><button class="btn s" onclick="accept('${i.id}')">Принять</button><button class="btn s d" onclick="decline('${i.id}')">✕</button></div>`).join('');
+const myT=mem(p).filter(m=>T(m.team));
+h+=`<h2>Мои команды</h2><div class="m" style="margin-bottom:8px">Игроком можно быть только в одной команде (лидером и CEO — в любом числе).</div>`+(myT.map(m=>{const tt=T(m.team),act=m.team==p.team;return teamRow(tt)+`<div class="row" style="margin:-4px 0 12px;flex-wrap:wrap"><span class="m">${rTag(p,tt.id)}${act?' · ✅ активная':''}</span>${act?'':`<button class="btn s c" onclick="setActive('${tt.id}')">Сделать активной</button>`}${m.role=='OWNER'?'':`<button class="btn s d" onclick="leaveT('${tt.id}')">Покинуть</button>`}</div>`}).join('')||'<div class="m">Вы не состоите в команде</div>');
+if(t)h+=(canManage()?`<button class="btn" onclick="go('manage')">⚙️ Управление: ${esc(t.name)}</button>`:`<div class="m">Управление «${esc(t.name)}» доступно только OWNER и LEADER</div>`);
+h+=`<button class="btn" onclick="createTeam()">➕ Создать команду</button>`;h+=`<button class="btn g" onclick="pickPhoto()">📷 ${p.photo?'Сменить':'Загрузить'} фото профиля</button>`;
+if(p.plat)h+=`<button class="btn c" onclick="tab('events')">🏆 Мои турниры</button>`;
+if(S.admin||p.admin)h+=`<button class="btn c" onclick="go('admin')">🛠 Админ-панель</button>`;
+h+=`<div class="demo">ДЕМО: переключить пользователя<select onchange="if(this.value=='__new'){S.reg=true;S.pending={nick:'',demo:1};render();return}S.me=this.value;S.route={p:'me'};S.hist=[];render()">${S.players.map(x=>`<option value="${x.id}" ${x.id==S.me?'selected':''}>${esc(x.nick)} — ${x.role||'без команды'}</option>`).join('')}<option value="__new">➕ Новый пользователь (регистрация)</option></select></div>`;return h},
+manage(){const p=me();if(!canManage()){return'<div class="card">Нет доступа</div>'}const t=T(p.team),own=p.role=='OWNER',pn=S.praks.filter(x=>x.status=='pending'&&x.t2==p.team).length;const tb=[['invite','👥 Пригласить'],['roster','Состав'],['edit','✏️ Изменить'],['set','⚙️ Настройки'],['prak','🤝 Праки'+(pn?' ('+pn+')':'')]];
+let h=`<div class="row" style="margin-bottom:12px">${logo(t)}<div class="sp"><div class="t">${esc(t.name)}</div><div class="m">Ваша роль: ${rTag(p)}</div></div></div><div class="tabs">${tb.map(x=>`<button class="${S.tab==x[0]?'on':''}" onclick="S.tab='${x[0]}';render()">${x[1]}</button>`).join('')}</div>`;
+if(S.tab=='invite'){const fa=S.players.filter(x=>!roleIn(x,t.id));h+=`<h2>Игроки для приглашения</h2>`+(fa.map(x=>{const sent=S.invites.some(i=>i.to==x.id&&i.team==t.id),bz=otherPlayerTeam(x,t.id);return`<div class="card row">${pav(x)}<div class="sp"><div class="t">${esc(x.nick)}</div><div class="m">ID ${esc(x.gid)} · K/D ${kd(x)} · ${wr(x)}% WR</div></div>${bz?`<span class="m" style="text-align:right">уже игрок<br>«${esc(T(bz).name)}»</span>`:`<button class="btn s ${sent?'g':''}" ${sent?'disabled':''} onclick="invite('${x.id}')">${sent?'Отправлено':'Пригласить'}</button>`}</div>`}).join('')||'<div class="m">Некого приглашать</div>')}
+if(S.tab=='roster'){h+=slotsCard(t)+`<div class="m" style="margin-bottom:8px">Основа: ${roster(t.id).filter(x=>!isRes(x,t.id)).length}/5 · запасные: ${roster(t.id).filter(x=>isRes(x,t.id)).length}</div>`+roster(t.id).map(x=>{const xr=roleIn(x,t.id);return`<div class="card"><div class="row">${pav(x)}<div class="sp"><div class="t">${esc(x.nick)} ${rTag(x,t.id)}</div></div><button class="btn s ${isRes(x,t.id)?'c':'g'}" onclick="resToggle('${x.id}')">${isRes(x,t.id)?'⬆ В основу':'⬇ В запас'}</button></div>${x.id!=p.id&&xr!='OWNER'&&(own||xr=='PLAYER')?`<div class="row" style="margin-top:8px;flex-wrap:wrap">${own?(xr=='PLAYER'?`<button class="btn s c" onclick="setRole('${x.id}','LEADER')">⬆ LEADER</button>`:`<button class="btn s g" onclick="setRole('${x.id}','PLAYER')">⬇ PLAYER</button>`):''}<button class="btn s d" onclick="kick('${x.id}')">Исключить</button></div>`:''}</div>`}).join('')}
+if(S.tab=='edit')h+=`<label>Тэг команды (меняет только админ)</label><input value="${esc(t.tag)}" disabled><label>Название</label><input id="en" value="${esc(t.name)}"><label>Логотип (эмодзи)</label><input id="el" maxlength="4" value="${t.logo.startsWith('data:')?'':esc(t.logo)}"><label>или загрузить изображение</label><input type="file" id="ef" accept="image/*"><label>Описание</label><textarea id="ed" rows="3">${esc(t.desc)}</textarea><button class="btn" onclick="saveTeam()">Сохранить</button>`;
+if(S.tab=='set'){h+=own?`<div class="card"><div class="t">Передать владение</div><div class="m" style="margin-bottom:8px">Вы станете LEADER</div><select id="ow">${roster(t.id).filter(x=>x.id!=p.id).map(x=>`<option value="${x.id}">${esc(x.nick)}</option>`).join('')}</select><button class="btn g" onclick="transfer()">Передать</button></div><div class="card"><div class="t">Удалить команду</div><div class="m">Действие необратимо</div><button class="btn d" onclick="delTeam()">Удалить команду</button></div>`:`<div class="card"><div class="m">LEADER не может передать владение или удалить команду.</div></div><button class="btn d" onclick="leave()">Покинуть команду</button>`}
+if(S.tab=='prak')h+=prakTab(t.id);return h},
+admin(){if(!(S.admin||me().admin))return'<div class="card">Нет доступа</div>';const a=S.atab;let h=`<div class="tabs">${[['players','Игроки'],['teams','Команды'],['matches','Матчи'],['events','Эвенты'],['praks','Праки'],['roles','Роли']].map(x=>`<button class="${a==x[0]?'on':''}" onclick="S.atab='${x[0]}';render()">${x[1]}</button>`).join('')}</div>${a=='roles'||a=='praks'?'':`<button class="btn" style="margin:0 0 10px" onclick="adm${a}()">➕ Добавить</button>`}`;
+if(a=='players')h+=S.players.map(p=>`<div class="card row"><div class="sp"><div class="t">${esc(p.nick)}</div><div class="m">${p.team?esc(T(p.team).name):'—'} · K/D ${kd(p)} · ${p.w}W/${p.l}L</div></div><button class="btn s g" onclick="admp('${p.id}')">✏️</button><button class="btn s d" onclick="del('players','${p.id}')">🗑</button></div>`).join('');
+if(a=='teams')h+=S.teams.map(t=>`<div class="card row">${logo(t)}<div class="sp"><div class="t">${esc(t.name)} <span class="m">[${esc(t.tag||'')}]</span></div><div class="m">${roster(t.id).length} игроков</div></div><button class="btn s g" onclick="admt('${t.id}')">✏️</button><button class="btn s d" onclick="del('teams','${t.id}')">🗑</button></div>`).join('');
+if(a=='matches')h+=S.matches.map(m=>`${matchCard(m)}<div style="margin:-4px 0 12px"><button class="btn s g" onclick="admmatch('${m.id}')">✏️ Изменить</button> <button class="btn s d" onclick="del('matches','${m.id}')">🗑 Удалить</button></div>`).join('');
+if(a=='events')h+=S.events.map(e=>`<div class="card row"><div class="sp"><div class="t">${esc(e.name)}</div><div class="m">${stL[e.status]} · ${e.teams.length}/${e.max}</div></div><button class="btn s g" onclick="admev('${e.id}')">✏️</button><button class="btn s d" onclick="del('events','${e.id}')">🗑</button></div>`).join('');
+if(a=='praks')h+=S.praks.filter(x=>x.status=='done'||x.status=='annulled').map(x=>`<div class="card"><div class="row"><div class="sp"><div class="t">${esc(T(x.t1).name)} ${win(x,1)}:${win(x,2)} ${esc(T(x.t2).name)}</div><div class="m">${x.date} · ${x.status=='done'?'засчитана':'аннулирована'}</div></div><button class="btn s g" onclick="shotView('${x.id}')">📸</button>${x.status=='done'?`<button class="btn s d" onclick="prakAnnul('${x.id}')">Аннулировать</button>`:''}</div></div>`).join('')||'<div class="m">Сыгранных праков пока нет</div>';
+if(a=='roles')h+=rolesTab();return h}};
+// действия
+function createTeam(){sheet('Создать команду',[{k:'n',l:'Название'},{k:'tag',l:'Тэг команды (2–5 символов, уникальный)',ph:'Например, PHX'},{k:'l',l:'Логотип (эмодзи)',v:'🏆'},{k:'f',l:'или изображение',t:'file'}],v=>{const tag=v.tag.trim().toUpperCase();if(!v.n.trim())return false;if(!tagOk(tag,'')){toast('Тэг: 2–5 букв или цифр, он должен быть уникальным');return false}const t={id:nid(),tag,name:v.n.trim(),logo:v.f||v.l||'🏆',desc:''};S.teams.push(t);const p=me();joinTeam(p,t.id,'OWNER',true);toast('Команда создана. Роли '+tag+' · CEO (вы) и '+tag+' · LEADER (свободна)')},'Создать')}
+function invite(to){const x=P(to),o=x&&otherPlayerTeam(x,me().team);if(o)return toast(x.nick+' уже игрок команды «'+T(o).name+'». Игроком можно быть только в одной команде (лидером и CEO — в любом числе).');S.invites.push({id:nid(),to,team:me().team});save();render();toast('Приглашение отправлено')}
+function accept(id){const i=S.invites.find(x=>x.id==id);const p=me();if(!i||!T(i.team))return;if(!roleIn(p,i.team)){const o=otherPlayerTeam(p);if(o)return toast('Вы уже игрок команды «'+T(o).name+'». Игроком можно быть только в одной команде (лидером и CEO — в любом числе).');joinTeam(p,i.team,'PLAYER',false)}S.invites=S.invites.filter(x=>!(x.to==p.id&&x.team==i.team));save();render()}
+function setActive(tid){const p=me();if(!roleIn(p,tid))return;p.team=tid;syncP(p);S.tab='invite';save();render()}
+function leaveT(tid){if(!confirm('Покинуть команду?'))return;leaveTeam(me(),tid);save();render()}
+function decline(id){S.invites=S.invites.filter(x=>x.id!=id);save();render()}
+function setRole(id,r){const tid=me().team,p=P(id),t=T(tid);if(r=='LEADER'){const cur=roster(tid).find(x=>roleIn(x,tid)=='LEADER'&&x.id!=id);if(cur){if(!confirm('Роль '+t.tag+' · LEADER уже у '+cur.nick+'. Передать её игроку '+p.nick+'?'))return;const oc=otherPlayerTeam(cur,tid);if(oc)return toast(cur.nick+' уже игрок команды «'+T(oc).name+'», в этой команде его нельзя перевести в PLAYER. Игроком можно быть только в одной команде (лидером и CEO — в любом числе).');setRoleIn(cur,tid,'PLAYER')}}if(r=='PLAYER'){const o=otherPlayerTeam(p,tid);if(o)return toast(p.nick+' уже игрок команды «'+T(o).name+'». Игроком можно быть только в одной команде (лидером и CEO — в любом числе).')}setRoleIn(p,tid,r);save();render()}
+function kick(id){if(!confirm('Исключить игрока?'))return;const p=P(id);leaveTeam(p,me().team);save();render()}
+function saveTeam(){const t=T(me().team);t.name=en.value.trim()||t.name;t.desc=ed.value;const f=ef.files[0];const fin=()=>{save();render();toast('Сохранено')};if(f){const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=128;c.getContext('2d').drawImage(im,0,0,128,128);t.logo=c.toDataURL('image/jpeg',.8);fin()};im.src=fr.result};fr.readAsDataURL(f)}else{if(el.value)t.logo=el.value;fin()}}
+function transfer(){const o=P(ow.value);if(!o||!confirm('Передать роль CEO игроку '+o.nick+'?'))return;const tid=me().team,pl=roster(tid).find(x=>roleIn(x,tid)=='LEADER'&&x.id!=o.id);if(pl&&otherPlayerTeam(me(),tid))return toast('Вы уже игрок другой команды, поэтому не можете стать здесь PLAYER. Сначала освободите роль LEADER.');setRoleIn(o,tid,'OWNER');setRoleIn(me(),tid,pl?'PLAYER':'LEADER');S.tab='roster';save();render()}
+function delTeam(){if(!confirm('Удалить команду навсегда?'))return;const id=me().team;rmTeam(id);S.hist=[];S.route={p:'me'};save();render()}
+function rmTeam(id){S.players.forEach(p=>leaveTeam(p,id));S.teams=S.teams.filter(t=>t.id!=id);S.invites=S.invites.filter(i=>i.team!=id);S.events.forEach(e=>dropTeam(e,id));S.praks=S.praks.filter(x=>x.t1!=id&&x.t2!=id)}
+function leave(){if(!confirm('Покинуть команду?'))return;const p=me();leaveTeam(p,p.team);S.hist=[];S.route={p:'me'};save();render()}
+const tOpts=(v)=>[['','Без команды'],...S.teams.map(t=>[t.id,t.name])];
+const pf=p=>[{k:'nick',l:'Ник',v:p.nick},{k:'gid',l:'Game ID (буквы и цифры)',v:p.gid||''},{k:'team',l:'Команда',t:'select',o:tOpts(),v:p.team||''},{k:'role',l:'Роль в команде',t:'select',o:[['PLAYER','PLAYER'],['LEADER','LEADER'],['OWNER','OWNER']],v:p.role||'PLAYER'},{k:'k',l:'Убийства',t:'number',v:p.k},{k:'d',l:'Смерти',t:'number',v:p.d},{k:'adr',l:'ADR',t:'number',v:p.adr},{k:'w',l:'Победы',t:'number',v:p.w},{k:'l',l:'Поражения',t:'number',v:p.l}];
+const gidOk=(g,id)=>/^[\p{L}\p{N}]{3,20}$/u.test(g)&&!S.players.some(x=>x.id!=id&&String(x.gid).toLowerCase()==g.toLowerCase());
+const applyP=(p,v)=>{if(!gidOk(v.gid.trim(),p.id)){toast('Game ID: 3–20 букв/цифр, уникальный');return false}const tm=v.team||null,rl=tm?v.role:null;if(rl=='OWNER'||rl=='LEADER'){const o=S.players.find(x=>x.id!=p.id&&roleIn(x,tm)==rl);if(o){toast('Роль '+T(tm).tag+' · '+(rl=='OWNER'?'CEO':'LEADER')+' уже занята игроком '+o.nick);return false}}if(rl=='PLAYER'){const o=otherPlayerTeam(p,tm);if(o&&o!=p.team){toast('Игрок уже состоит в команде «'+T(o).name+'» как PLAYER. Игроком можно быть только в одной команде (лидером и CEO — в любом числе).');return false}}p.gid=v.gid.trim();p.nick=v.nick.trim()||p.nick;if(p.team&&p.team!=tm)leaveTeam(p,p.team);if(tm)joinTeam(p,tm,v.role,true);['k','d','adr','w','l'].forEach(x=>p[x]=+v[x]||0)};
+function admplayers(){const p={id:nid(),nick:'',gid:'',team:null,role:null,k:0,d:0,adr:0,w:0,l:0};sheet('Новый игрок',pf(p),v=>{if(!v.nick.trim()||applyP(p,v)===false)return false;S.players.push(p)})}
+function admp(id){const p=P(id);sheet('Игрок',pf(p),v=>applyP(p,v))}
+function admteams(){createTeamAdmin()}
+function createTeamAdmin(){sheet('Новая команда',[{k:'n',l:'Название'},{k:'tag',l:'Тэг команды (2–5 символов)'},{k:'l',l:'Логотип (эмодзи)',v:'🏆'},{k:'d',l:'Описание'}],v=>{const tag=v.tag.trim().toUpperCase();if(!v.n.trim())return false;if(!tagOk(tag,'')){toast('Тэг: 2–5 букв или цифр, уникальный');return false}S.teams.push({id:nid(),tag,name:v.n.trim(),logo:v.l||'🏆',desc:v.d})})}
+function admt(id){const t=T(id);sheet('Команда',[{k:'n',l:'Название',v:t.name},{k:'tag',l:'Тэг команды (2–5 символов)',v:t.tag||''},{k:'l',l:'Логотип (эмодзи)',v:t.logo.startsWith('data:')?'':t.logo},{k:'f',l:'или изображение',t:'file'},{k:'d',l:'Описание',v:t.desc}],v=>{const tag=v.tag.trim().toUpperCase();if(!tagOk(tag,t.id)){toast('Тэг: 2–5 букв или цифр, уникальный');return false}t.tag=tag;t.name=v.n||t.name;if(v.f)t.logo=v.f;else if(v.l)t.logo=v.l;t.desc=v.d})}
+function mf(m){const o=S.teams.map(t=>[t.id,t.name]);return[{k:'t1',l:'Команда 1',t:'select',o,v:m.t1},{k:'t2',l:'Команда 2',t:'select',o,v:m.t2},{k:'date',l:'Дата',t:'date',v:m.date},{k:'maps',l:'Карты (по строке: Название 13-9). Пул: '+MAP_POOL.join(', '),t:'area',v:m.maps.map(x=>`${x.map} ${x.a}-${x.b}`).join('\n'),ph:'Sandstone 13-9'}]}
+function applyM(m,v){if(v.t1==v.t2){toast('Выберите разные команды');return false}const maps=parseMaps(v.maps);if(!maps.length){toast(parseMaps.err||'Добавьте хотя бы одну карту');return false}Object.assign(m,{t1:v.t1,t2:v.t2,date:v.date,maps:mergeMaps(m.maps,maps)})}
+function admmatches(){if(S.teams.length<2)return toast('Нужно минимум 2 команды');const m={id:nid(),t1:S.teams[0].id,t2:S.teams[1].id,date:new Date().toISOString().slice(0,10),maps:[]};sheet('Новый матч',mf(m),v=>{if(applyM(m,v)===false)return false;S.matches.unshift(m)})}
+function evFields(e){return[{k:'name',l:'Название',v:e.name},{k:'status',l:'Статус',t:'select',o:[['reg','Регистрация'],['live','Идёт сейчас'],['done','Завершён']],v:e.status},{k:'date',l:'Дата старта',t:'date',v:e.date},{k:'prize',l:'Призовой фонд',v:e.prize},{k:'max',l:'Макс. команд',t:'number',v:e.max},{k:'q',l:'Квалификация (играют все зарегистрированные команды)',t:'select',o:[['','Без квалификации'],['swiss','Швейцарская система → лучшие проходят в основной этап']],v:(e.stages||{}).q||''},{k:'qfmt',l:'Формат матчей квалификации',t:'select',o:[['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3']],v:(e.stages||{}).qfmt||'Bo1'},{k:'qrounds',l:'Раундов квалификации',t:'select',o:[[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9']],v:(e.stages||{}).qrounds||5},{k:'qadv',l:'Сколько команд проходит дальше (остальные выбывают)',t:'select',o:[[2,'2'],[4,'4'],[6,'6'],[8,'8'],[12,'12'],[16,'16'],[24,'24'],[32,'32']],v:(e.stages||{}).qadv||8},{k:'s1',l:'Первый этап основного турнира',t:'select',o:[['','Без первого этапа (сразу плей-офф)'],['groups','Групповой этап'],['swiss','Швейцарская система']],v:(e.stages||{}).s1||''},{k:'gfmt',l:'Формат матчей первого этапа',t:'select',o:[['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3'],['Bo5','Bo5']],v:(e.stages||{}).group||'Bo2'},{k:'srounds',l:'Раундов швейцарки',t:'select',o:[[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7']],v:(e.stages||{}).rounds||5},{k:'sadv',l:'Сколько команд из швейцарки выходит в плей-офф',t:'select',o:[[2,'2'],[4,'4'],[8,'8']],v:(e.stages||{}).adv||4},{k:'pfmt',l:'Формат плей-офф',t:'select',o:[['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3'],['Bo5','Bo5']],v:(e.stages||{}).playoff||'Bo3'},{k:'ffmt',l:'Формат финала',t:'select',o:[['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3'],['Bo5','Bo5']],v:(e.stages||{}).final||'Bo5'},{k:'tfmt',l:'Матч за 3 место',t:'select',o:[['','Без матча за 3 место'],['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3'],['Bo5','Bo5']],v:(e.stages||{}).third||''},{k:'desc',l:'Описание',t:'area',v:e.desc}]}
+const applyE=(e,v)=>{const st={q:v.q,qfmt:v.q?v.qfmt:'',qrounds:+v.qrounds||5,qadv:+v.qadv||8,s1:v.s1,group:v.s1?v.gfmt:'',rounds:+v.srounds||5,adv:+v.sadv||4,playoff:v.pfmt,final:v.ffmt,third:v.tfmt};Object.assign(e,{name:v.name.trim()||e.name,status:v.status,date:v.date,prize:v.prize,max:Math.max(2,+v.max||2),stages:st,fmt:fmtStr(st),desc:v.desc});if(!e.groups)e.groups=[];if(e.bracket){if(e.bracket.type=='double'){e.bracket.rounds.concat(e.bracket.lower).forEach(x=>x.fmt=st.playoff);e.bracket.gf.fmt=st.final;if(e.bracket.gf2)e.bracket.gf2.fmt=st.final}else{e.bracket.rounds.forEach((x,k,a)=>x.fmt=k==a.length-1?st.final:st.playoff);if(e.bracket.third&&st.third)e.bracket.third.fmt=st.third}}};
+function admevents(){const e={id:nid(),name:'',status:'reg',date:new Date().toISOString().slice(0,10),prize:'',max:16,fmt:'',stages:{s1:'',group:'',rounds:5,adv:4,playoff:'Bo3',final:'Bo5',third:''},groups:[],desc:'',teams:[]};sheet('Новый эвент',evFields(e),v=>{if(!v.name.trim())return false;applyE(e,v);S.events.unshift(e)})}
+function admev(id){const e=evById(id);sheet('Эвент',evFields(e),v=>applyE(e,v))}
+const mgrCard=e=>`<h2>Управление турниром</h2><div class="card"><div class="row" style="flex-wrap:wrap"><button class="btn s g" onclick="evEdit('${e.id}')">✏️ Изменить</button>${[['reg','📝 Регистрация'],['live','🔴 Запустить'],['done','🏁 Завершить']].filter(x=>x[0]!=e.status).map(x=>`<button class="btn s c" onclick="evStatus('${e.id}','${x[0]}')">${x[1]}</button>`).join('')}<button class="btn s d" onclick="evDelete('${e.id}')">🗑 Удалить</button></div></div>`;
+function evCreate(){if(!canOrg())return;const e={id:nid(),by:me().id,name:'',status:'reg',date:new Date().toISOString().slice(0,10),prize:'',max:16,fmt:'',stages:{s1:'',group:'',rounds:5,adv:4,playoff:'Bo3',final:'Bo5',third:''},groups:[],desc:'',teams:[]};sheet('Новый турнир',evFields(e),v=>{if(!v.name.trim())return false;applyE(e,v);S.events.unshift(e)},'Создать турнир')}
+function evEdit(id){const e=evById(id);if(!canEditEv(e))return;sheet('Изменить турнир',evFields(e),v=>applyE(e,v))}
+function evStatus(id,st){const e=evById(id);if(!canEditEv(e))return;const bad=e.teams.filter(t=>roster(t).length<5);if(st=='live'&&bad.length){if(!confirm('В командах '+bad.map(t=>T(t).name).join(', ')+' меньше 5 игроков. Исключить их и запустить турнир?'))return;bad.forEach(t=>dropTeam(e,t))}e.status=st;save();render()}
+function evKick(id,t){const e=evById(id);if(!canEditEv(e)||!confirm('Исключить команду из турнира?'))return;dropTeam(e,t);save();render()}
+function evDelete(id){const e=evById(id);if(!canEditEv(e)||!confirm('Удалить турнир «'+e.name+'»?'))return;S.events=S.events.filter(x=>x.id!=id);S.matches.forEach(m=>{if(m.ev==id)delete m.ev});S.route=S.hist.pop()||{p:'events'};save();render()}
+function fmtStr(s){return[s.q?'Квалификация (швейцарка '+s.qfmt+' · '+(s.qrounds||5)+' р.) → топ-'+(s.qadv||8):'',s.s1=='swiss'?'Швейцарка '+s.group+' · '+(s.rounds||5)+' р.':s.s1=='groups'?'Группы '+s.group:'','Плей-офф '+s.playoff,'Финал '+s.final,s.third?'3 место '+s.third:''].filter(Boolean).join(' · ')}
+function dropTeam(e,id){e.teams=e.teams.filter(x=>x!=id);if(e.dq)delete e.dq[id];if(e.qswiss&&e.qswiss.teams.includes(id)){S.matches=S.matches.filter(m=>!(m.ev==e.id&&m.stage=='qual'));e.qswiss=null;e.qdone=false;e.qualified=null;resetMain(e)}if(e.swiss&&e.swiss.teams.includes(id)){S.matches=S.matches.filter(m=>!(m.ev==e.id&&m.stage=='swiss'));e.swiss=null}(e.groups||[]).forEach(g=>g.teams=g.teams.filter(x=>x!=id));S.matches=S.matches.filter(m=>!(m.ev==e.id&&m.stage=='group'&&(m.t1==id||m.t2==id)));if(e.bracket&&JSON.stringify(e.bracket).includes('"'+id+'"')){e.bracket=null;delete e.champ;e.places={};delete e.roster;S.matches=S.matches.filter(m=>!(m.ev==e.id&&['playoff','lower','final','third'].includes(m.stage)))}}
+function genBracket(e,seeds){let size=2;while(size<seeds.length)size*=2;const q=[...seeds];while(q.length<size)q.push(null);const R=Math.log2(size),rounds=[];
+for(let r=0;r<R;r++){const n=size/Math.pow(2,r);rounds.push({name:n==2?'Финал':n==4?'Полуфинал':'1/'+(n/2)+' финала',fmt:(n==2?e.stages.final:e.stages.playoff)||'Bo3',slots:Array.from({length:n/2},()=>({a:null,b:null}))})}
+for(let i=0;i<size/2;i++){rounds[0].slots[i].a=q[i];rounds[0].slots[i].b=q[size-1-i]}
+rounds[0].slots.forEach((sl,i)=>{if(!sl.a||!sl.b){sl.bye=1;sl.w=sl.a||sl.b;if(R>1)rounds[1].slots[i>>1][i%2?'b':'a']=sl.w}});e.bracket={size,rounds,count:seeds.length,third:(e.stages.third&&size>=4&&!(size==4&&seeds.length<4))?{a:null,b:null,fmt:e.stages.third}:null};e.places={};delete e.roster}
+// ===== Двойная сетка (Double Elimination): верхняя сетка, нижняя сетка, гранд-финал со сбросом =====
+const BYE='~';
+const dbBox=()=>({a:null,b:null});
+function genBracketDb(e,seeds){
+  let size=4;while(size<seeds.length)size*=2;
+  const q=[...seeds];while(q.length<size)q.push(BYE);
+  const R=Math.log2(size),L=2*(R-1),ub=[],lb=[];
+  for(let r=0;r<R;r++){const n=size/Math.pow(2,r);ub.push({name:r==R-1?'Финал верхней сетки':r==R-2?'Полуфинал верхней':'Верхняя · раунд '+(r+1),fmt:e.stages.playoff||'Bo3',slots:Array.from({length:n/2},dbBox)})}
+  for(let j=0;j<L;j++){const c=size/Math.pow(2,Math.floor(j/2)+2);lb.push({name:j==L-1?'Финал нижней сетки':'Нижняя · раунд '+(j+1),fmt:e.stages.playoff||'Bo3',slots:Array.from({length:c},dbBox)})}
+  const seed=[];for(let i=0;i<size/2;i++)seed.push([q[i],q[size-1-i]]);
+  e.bracket={type:'double',size,count:seeds.length,seed,rounds:ub,lower:lb,gf:{a:null,b:null,fmt:e.stages.final||'Bo5'},gf2:null,champ:null};
+  e.places={};delete e.roster;delete e.champ;
+  dbRecompute(e.bracket);
+}
+function dbAll(b){const o=[];b.rounds.forEach((rd,r)=>rd.slots.forEach((x,i)=>o.push([x,'u',r,i])));b.lower.forEach((rd,r)=>rd.slots.forEach((x,i)=>o.push([x,'l',r,i])));return o}
+// куда уходят победитель и проигравший матча
+function dbDest(b,k,r,i){
+  const R=b.rounds.length,L=b.lower.length;
+  if(k=='u')return{w:r<R-1?['u',r+1,i>>1,i%2?'b':'a']:['g','a'],l:r==0?['l',0,i>>1,i%2?'b':'a']:['l',2*r-1,i,'b']};
+  return{w:r==L-1?['g','b']:r%2==0?['l',r+1,i,'a']:['l',r+1,i>>1,i%2?'b':'a'],l:null};
+}
+function dbPut(b,d,t){const x=d[0]=='g'?b.gf:(d[0]=='u'?b.rounds:b.lower)[d[1]].slots[d[2]];x[d[d.length-1]]=t}
+function dbSlotOf(b,k,r,i){return k=='g'?(r?b.gf2:b.gf):(k=='u'?b.rounds:b.lower)[r].slots[i]}
+function dbFmt(b,k,r){return k=='g'?(r?b.gf2:b.gf).fmt:(k=='u'?b.rounds:b.lower)[r].fmt}
+function dbName(b,k,r){return k=='g'?(r?'Гранд-финал · сброс':'Гранд-финал'):(k=='u'?b.rounds:b.lower)[r].name}
+// Полный пересчёт сетки из сидов и записанных результатов (rw = победитель матча).
+// Возвращает id матчей, результаты которых стали недействительными.
+function dbRecompute(b){
+  const dropped=[],all=dbAll(b);
+  all.forEach(([x])=>{x.a=null;x.b=null;delete x.w;delete x.bye});
+  b.rounds[0].slots.forEach((x,i)=>{x.a=b.seed[i][0];x.b=b.seed[i][1]});
+  const gf=b.gf;gf.a=null;gf.b=null;delete gf.w;
+  if(b.gf2){b.gf2.a=null;b.gf2.b=null;delete b.gf2.w}
+  let ch=true,n=0;
+  while(ch&&n++<300){ch=false;
+    all.forEach(([x,k,r,i])=>{
+      if(x.w!==undefined||!x.a||!x.b)return;
+      let w=null,l=null,bye=0;
+      if(x.a==BYE&&x.b==BYE){w=BYE;l=BYE;bye=1}
+      else if(x.a==BYE){w=x.b;l=BYE;bye=1}
+      else if(x.b==BYE){w=x.a;l=BYE;bye=1}
+      else if(x.rw&&(x.rw==x.a||x.rw==x.b)){w=x.rw;l=w==x.a?x.b:x.a}
+      if(!w)return;
+      x.w=w;if(bye)x.bye=1;ch=true;
+      const d=dbDest(b,k,r,i);dbPut(b,d.w,w);if(d.l)dbPut(b,d.l,l);
+    });
+  }
+  all.forEach(([x])=>{if(x.rw&&x.w!==x.rw){if(x.mid)dropped.push(x.mid);delete x.rw;delete x.mid}});
+  // гранд-финал
+  let champ=null;
+  const okW=(x)=>x.rw&&(x.rw==x.a||x.rw==x.b);
+  if(gf.a&&gf.b&&okW(gf)){
+    gf.w=gf.rw;
+    if(gf.w==gf.a){champ=gf.w;if(b.gf2){if(b.gf2.mid)dropped.push(b.gf2.mid);b.gf2=null}}
+    else{
+      if(!b.gf2)b.gf2={fmt:gf.fmt};
+      b.gf2.a=gf.a;b.gf2.b=gf.b;
+      if(okW(b.gf2)){b.gf2.w=b.gf2.rw;champ=b.gf2.w}
+      else if(b.gf2.rw){if(b.gf2.mid)dropped.push(b.gf2.mid);delete b.gf2.rw;delete b.gf2.mid}
+    }
+  }else{
+    if(gf.rw){if(gf.mid)dropped.push(gf.mid);delete gf.rw;delete gf.mid}
+    if(b.gf2){if(b.gf2.mid)dropped.push(b.gf2.mid);b.gf2=null}
+  }
+  b.champ=champ;
+  return dropped;
+}
+function computePlacesDb(e){
+  const b=e.bracket,pl={};let pos=3;
+  if(b.champ){pl[b.champ]={lo:1,hi:1};const g=b.gf2||b.gf,f=g.w==g.a?g.b:g.a;if(f&&f!=BYE)pl[f]={lo:2,hi:2}}
+  for(let j=b.lower.length-1;j>=0;j--){const rd=b.lower[j],c=rd.slots.length;rd.slots.forEach(x=>{if(x.bye||x.w===undefined||!x.a||!x.b)return;const l=x.w==x.a?x.b:x.a;if(l&&l!=BYE&&!pl[l])pl[l]={lo:Math.min(pos,b.count),hi:Math.min(pos+c-1,b.count)}});pos+=c}
+  qualPlaces(e,pl);e.places=pl;e.roster=e.roster||{};
+  Object.keys(pl).forEach(t=>{if(!e.roster[t])e.roster[t]=roster(t).map(p=>p.id)});
+  if(b.champ)e.status='done';
+}
+function dbSync(e){
+  const d=dbRecompute(e.bracket);
+  if(e.bracket.champ)e.champ=e.bracket.champ;else delete e.champ;
+  if(d.length)S.matches=S.matches.filter(m=>!d.includes(m.id));
+  computePlacesDb(e);
+}
+const bracketHasResults=b=>!!b&&(b.rounds.some(r=>r.slots.some(x=>x.mid))||(b.lower||[]).some(r=>r.slots.some(x=>x.mid))||!!(b.gf&&b.gf.mid)||!!(b.gf2&&b.gf2.mid)||!!(b.third&&b.third.mid));
+function bracketViewDb(e,h){
+  const mg=canEditEv(e),b=e.bracket;
+  const nm=id=>id==BYE?'BYE':id&&T(id)?esc(T(id).name):'TBD';
+  const sc=(x,side)=>{const m=S.matches.find(y=>y.id==x.mid);return m?win(m,side=='a'?1:2):''};
+  const real=x=>x.a&&x.b&&x.a!=BYE&&x.b!=BYE&&!x.bye;
+  const box=(x,ck)=>`<div class="bm ${ck?'click':''}" ${ck?`onclick="${ck}"`:''}><div class="bt ${x.w&&x.w==x.a?'w':''} ${x.a&&x.a!=BYE?'':'n'}"><span>${nm(x.a)}</span><b>${sc(x,'a')}</b></div><div class="bt ${x.w&&x.w==x.b?'w':''} ${x.b&&x.b!=BYE?'':'n'}"><span>${nm(x.b)}</span><b>${sc(x,'b')}</b></div></div>`;
+  const col=(k,rd,r)=>`<div class="bcol"><div class="bh">${rd.name}<span>${rd.fmt}</span></div><div class="bc">${rd.slots.map((x,i)=>x.a==BYE&&x.b==BYE?'':box(x,mg&&real(x)?`evResultDb('${e.id}','${k}',${r},${i})`:'')).join('')}</div></div>`;
+  h+=`<div class="m" style="margin-bottom:10px">Двойная сетка (Double Elimination) · Плей-офф: <b>${e.stages.playoff}</b> · Гранд-финал: <b>${b.gf.fmt}</b></div>`;
+  if(e.champ&&T(e.champ))h+=`<div class="card row" style="background:linear-gradient(90deg,#ffc40033,var(--bg2))">${logo(T(e.champ))}<div class="sp"><div class="m">🏆 ЧЕМПИОН</div><div class="t" style="font-size:18px">${esc(T(e.champ).name)}</div></div></div>`;
+  h+=placesCard(e);
+  h+=(mg?`<div class="m" style="margin:10px 0 8px">Нажмите на матч, чтобы внести результат. Проигравший верхней сетки падает в нижнюю, проигравший нижней выбывает.</div>`:'');
+  h+=`<h2>Верхняя сетка</h2><div class="br">${b.rounds.map((rd,r)=>col('u',rd,r)).join('')}</div>`;
+  h+=`<h2>Нижняя сетка</h2><div class="br">${b.lower.map((rd,r)=>col('l',rd,r)).join('')}</div>`;
+  h+=`<h2>Гранд-финал</h2><div class="m" style="margin-bottom:8px">Если победит команда из нижней сетки, играется ещё один решающий матч.</div><div class="br"><div class="bcol"><div class="bh">Гранд-финал<span>${b.gf.fmt}</span></div><div class="bc">${box(b.gf,mg&&real(b.gf)?`evResultDb('${e.id}','g',0,0)`:'')}</div></div>${b.gf2?`<div class="bcol"><div class="bh">Решающий матч<span>${b.gf2.fmt}</span></div><div class="bc">${box(b.gf2,mg&&real(b.gf2)?`evResultDb('${e.id}','g',1,0)`:'')}</div></div>`:''}</div>`;
+  return h;
+}
+function evResultDb(id,k,r,i){
+  const e=evById(id);if(!canEditEv(e)||!e.bracket)return;
+  const b=e.bracket,sl=dbSlotOf(b,k,r,i);if(!sl||!sl.a||!sl.b||sl.a==BYE||sl.b==BYE)return;
+  const fmt=dbFmt(b,k,r),bo=+fmt.slice(2),old=S.matches.find(x=>x.id==sl.mid);
+  sheet(dbName(b,k,r)+' · '+(T(sl.a)?T(sl.a).name:'?')+' vs '+(T(sl.b)?T(sl.b).name:'?')+' ('+fmt+')',[{k:'date',l:'Дата',t:'date',v:old?old.date:new Date().toISOString().slice(0,10)},{k:'maps',l:'Карты (по строке: Название 13-9). Пул: '+MAP_POOL.join(', '),t:'area',ph:'Sandstone 13-9',v:old?old.maps.map(x=>x.map+' '+x.a+'-'+x.b).join('\n'):''}],v=>{
+    const mp=parseMaps(v.maps);if(!mp.length){toast(parseMaps.err||'Добавьте хотя бы одну карту');return false}
+    if(mp.length>bo){toast('Формат '+fmt+': не больше '+bo+' карт');return false}
+    const t={maps:mp},a=win(t,1),c=win(t,2);if(a==c){toast('В плей-офф ничья невозможна');return false}
+    const w=a>c?sl.a:sl.b;
+    if(sl.rw&&sl.rw!=w){const cl=JSON.parse(JSON.stringify(b));dbSlotOf(cl,k,r,i).rw=w;const d=dbRecompute(cl);if(d.length&&!confirm('Смена победителя сбросит результаты следующих матчей ('+d.length+'). Продолжить?'))return false}
+    if(!old){const m={id:nid(),ev:e.id,stage:k=='u'?'playoff':k=='l'?'lower':'final',round:dbName(b,k,r),t1:sl.a,t2:sl.b,date:v.date,maps:mp};S.matches.unshift(m);sl.mid=m.id}else{old.date=v.date;old.maps=mergeMaps(old.maps,mp)}
+    sl.rw=w;dbSync(e);
+  },'Сохранить результат');
+}
+function standings(e,g){const rw={};g.teams.forEach(t=>rw[t]={t,i:0,w:0,d:0,l:0,mf:0,ma:0,p:0});S.matches.filter(m=>m.ev==e.id&&m.stage=='group'&&rw[m.t1]&&rw[m.t2]).forEach(m=>{const a=win(m,1),b=win(m,2),x=rw[m.t1],y=rw[m.t2];x.i++;y.i++;x.mf+=a;x.ma+=b;y.mf+=b;y.ma+=a;if(a>b){x.w++;y.l++;x.p+=3}else if(b>a){y.w++;x.l++;y.p+=3}else{x.d++;y.d++;x.p++;y.p++}});return Object.values(rw).sort((x,y)=>y.p-x.p||(y.mf-y.ma)-(x.mf-x.ma)||y.mf-x.mf)}
+const evTabs=e=>{const t=[['over','Обзор']];if(e.stages&&e.stages.q)t.push(['qual','🎯 Квалификация']);if(e.stages&&e.stages.s1)t.push(['grp',e.stages.s1=='swiss'?'🇨🇭 Швейцарка':'📊 Группы']);t.push(['po','🏆 Плей-офф']);return`<div class="tabs">${t.map(x=>`<button class="${(S.etab==x[0]||(x[0]=='over'&&!t.some(y=>y[0]==S.etab)))?'on':''}" onclick="S.etab='${x[0]}';render()">${x[1]}</button>`).join('')}</div>`};
+const evHead=e=>`<div class="row" style="margin-bottom:10px"><div class="sp t" style="font-size:18px">${esc(e.name)}</div><span class="tag ${e.status}">${stL[e.status]}</span></div>`;
+const groupsView=e=>{const mg=canEditEv(e);let h=evHead(e)+`<div class="m" style="margin-bottom:10px">Формат группы: <b>${e.stages.group}</b> · победа — 3 очка, ничья — 1, поражение — 0</div>`;
+if(mg)h+=`<div class="row" style="flex-wrap:wrap;margin-bottom:10px"><button class="btn s c" onclick="evGroups('${e.id}')">👥 Сформировать группы</button><button class="btn s" onclick="evAddMatch('${e.id}')">➕ Матч группы</button></div>`;
+if(!e.groups.length)return h+`<div class="card m">Группы ещё не сформированы.</div>`;
+return h+e.groups.map(g=>{const st=standings(e,g),gm_=S.matches.filter(m=>m.ev==e.id&&m.stage=='group'&&m.grp==g.name);return`<h2>Группа ${esc(g.name)}</h2><div class="card"><table class="tb"><tr><th>#</th><th style="text-align:left">Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Карты</th><th>О</th></tr>${st.map((x,i)=>`<tr class="${i<2?'q':''}" onclick="go('team','${x.t}')"><td>${i+1}</td><td>${T(x.t)?esc(T(x.t).name):'?'}</td><td>${x.i}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.mf}:${x.ma}</td><td><b>${x.p}</b></td></tr>`).join('')}</table></div>${gm_.map(m=>matchCard(m)+(mg?`<div style="margin:-4px 0 12px"><button class="btn s d" onclick="del('matches','${m.id}')">🗑 Удалить матч</button></div>`:'')).join('')}`}).join('')};
+const plc=p=>p.lo==p.hi?p.lo:p.lo+'–'+p.hi,medal=p=>p.lo==p.hi&&p.lo<=3?['🥇','🥈','🥉'][p.lo-1]:'🏅';
+const teamAch=id=>S.events.filter(e=>e.places&&e.places[id]).sort((a,b)=>a.date<b.date?1:-1).map(e=>({e,p:e.places[id]}));
+const playerAch=p=>S.events.map(e=>{const t=Object.keys(e.roster||{}).find(k=>e.roster[k].includes(p.id)&&e.places&&e.places[k]);return t?{e,p:e.places[t],t}:null}).filter(Boolean).sort((a,b)=>a.e.date<b.e.date?1:-1);
+const achCard=a=>a.length?`<h2>🏅 Достижения</h2>`+a.map(x=>`<div class="card click row" onclick="go('event','${x.e.id}')"><div style="font-size:26px">${medal(x.p)}</div><div class="sp"><div class="t">${esc(x.e.name)}</div><div class="m">${x.e.date}${x.t&&T(x.t)?' · '+esc(T(x.t).name):''}</div></div><b>${plc(x.p)} место</b></div>`).join(''):'';
+const placesCard=e=>{const a=Object.entries(e.places||{}).map(([t,p])=>({t,p})).filter(x=>T(x.t)).sort((x,y)=>x.p.lo-y.p.lo);return a.length?`<h2>Итоговые места</h2><div class="card">${a.map(x=>`<div class="row" style="padding:5px 0"><div style="width:30px;font-size:20px">${medal(x.p)}</div><div class="sp t click" onclick="go('team','${x.t}')">${esc(T(x.t).name)}</div><b>${plc(x.p)}</b></div>`).join('')}</div>`:''};
+function computePlaces(e){const b=e.bracket;if(!b)return;const pl={};b.rounds.forEach((rd,ri)=>{const n=b.size/Math.pow(2,ri);rd.slots.forEach(x=>{if(x.bye||!x.w||!x.a||!x.b)return;const l=x.w==x.a?x.b:x.a,lo=n/2+1;pl[l]={lo,hi:Math.max(lo,Math.min(n,b.count))}})});if(e.champ)pl[e.champ]={lo:1,hi:1};if(b.third&&b.third.w){const t=b.third,l=t.w==t.a?t.b:t.a;pl[t.w]={lo:3,hi:3};pl[l]={lo:4,hi:4}}qualPlaces(e,pl);e.places=pl;e.roster=e.roster||{};Object.keys(pl).forEach(t=>{if(!e.roster[t])e.roster[t]=roster(t).map(p=>p.id)});if(e.champ&&(!b.third||b.third.w))e.status='done'}
+const bracketView=e=>{const mg=canEditEv(e),b=e.bracket;let h=evHead(e)+`<div class="m" style="margin-bottom:10px">Плей-офф: <b>${e.stages.playoff}</b> · Финал: <b>${e.stages.final}</b>${e.stages.third?' · 3 место: <b>'+e.stages.third+'</b>':''}</div>`;
+if(mg)h+=`<button class="btn s c" style="margin-bottom:10px" onclick="evBracket('${e.id}')">🏆 ${b?'Пересоздать сетку':'Сформировать сетку'}</button>`;
+if(!b)return h+`<div class="card m">Сетка плей-офф ещё не сформирована.</div>`;if(b.type=='double')return bracketViewDb(e,h);
+const nm=(id,x)=>id&&T(id)?esc(T(id).name):(x.bye?'BYE':'TBD'),sc=(x,side)=>{const m=S.matches.find(y=>y.id==x.mid);return m?win(m,side=='a'?1:2):''};
+const box=(x,ck)=>`<div class="bm ${ck?'click':''}" ${ck?`onclick="${ck}"`:''}><div class="bt ${x.w&&x.w==x.a?'w':''} ${x.a?'':'n'}"><span>${nm(x.a,x)}</span><b>${sc(x,'a')}</b></div><div class="bt ${x.w&&x.w==x.b?'w':''} ${x.b?'':'n'}"><span>${nm(x.b,x)}</span><b>${sc(x,'b')}</b></div></div>`;
+if(e.champ&&T(e.champ))h+=`<div class="card row" style="background:linear-gradient(90deg,#ffc40033,var(--bg2))">${logo(T(e.champ))}<div class="sp"><div class="m">🏆 ЧЕМПИОН</div><div class="t" style="font-size:18px">${esc(T(e.champ).name)}</div></div></div>`;
+h+=placesCard(e);
+h+=(mg?`<div class="m" style="margin:10px 0 8px">Нажмите на матч, чтобы внести результат.</div>`:'')+`<div class="br">`+b.rounds.map((rd,ri)=>{const last=ri==b.rounds.length-1;return`<div class="bcol"><div class="bh">${rd.name}<span>${rd.fmt}</span></div><div class="bc">${rd.slots.map((x,si)=>box(x,mg&&x.a&&x.b?`evResult('${e.id}',${ri},${si})`:'')).join('')}</div>${last&&b.third?`<div class="bh" style="margin-top:16px">Матч за 3 место<span>${b.third.fmt}</span></div>${box(b.third,mg&&b.third.a&&b.third.b?`evResultThird('${e.id}')`:'')}`:''}</div>`}).join('')+`</div>`;return h};
+function evResultThird(id){const e=evById(id),sl=e.bracket.third;if(!canEditEv(e)||!sl)return;const bo=+sl.fmt.slice(2),old=S.matches.find(x=>x.id==sl.mid);
+sheet('Матч за 3 место · '+(T(sl.a)?T(sl.a).name:'?')+' vs '+(T(sl.b)?T(sl.b).name:'?')+' ('+sl.fmt+')',[{k:'date',l:'Дата',t:'date',v:old?old.date:new Date().toISOString().slice(0,10)},{k:'maps',l:'Карты (по строке: Название 13-9). Пул: '+MAP_POOL.join(', '),t:'area',ph:'Sandstone 13-9',v:old?old.maps.map(x=>x.map+' '+x.a+'-'+x.b).join('\n'):''}],v=>{
+const mp=parseMaps(v.maps);if(!mp.length){toast(parseMaps.err||'Добавьте хотя бы одну карту');return false}if(mp.length>bo){toast('Формат '+sl.fmt+': не больше '+bo+' карт');return false}const t={maps:mp},a=win(t,1),b=win(t,2);if(a==b){toast('Ничья невозможна');return false}
+if(!old){const m={id:nid(),ev:e.id,stage:'third',round:'Матч за 3 место',t1:sl.a,t2:sl.b,date:v.date,maps:mp};S.matches.unshift(m);sl.mid=m.id}else{old.date=v.date;old.maps=mergeMaps(old.maps,mp)}
+sl.w=a>b?sl.a:sl.b;computePlaces(e)},'Сохранить результат')}
+// Швейцарская система используется и в основном этапе (e.swiss), и в квалификации (e.qswiss, q=true).
+function swCtx(e,q){return q?{sw:e.qswiss,key:'qswiss',stage:'qual',R:e.stages.qrounds||5,adv:e.stages.qadv||8,fmt:e.stages.qfmt||'Bo1'}:{sw:e.swiss,key:'swiss',stage:'swiss',R:e.stages.rounds||5,adv:e.stages.adv||4,fmt:e.stages.group}}
+// кто играет в основном этапе: при квалификации — только прошедшие её
+function mainTeams(e){return e.stages&&e.stages.q?(e.qualified||[]):e.teams}
+function resetMain(e){S.matches=S.matches.filter(m=>!(m.ev==e.id&&['group','swiss','playoff','lower','final','third'].includes(m.stage)));e.swiss=null;e.groups=[];e.bracket=null;delete e.champ;e.places={};delete e.roster}
+function qualPlaces(e,pl){if(e.qdone&&e.qswiss&&e.qualified)swissStand(e,true).forEach((x,i)=>{if(!e.qualified.includes(x.t))pl[x.t]={lo:i+1,hi:i+1}})}
+function swissStand(e,q){const c=swCtx(e,q),sw=c.sw,rw={};sw.teams.forEach(t=>rw[t]={t,i:0,w:0,d:0,l:0,mf:0,ma:0,p:0});S.matches.filter(m=>m.ev==e.id&&m.stage==c.stage&&rw[m.t1]&&rw[m.t2]).forEach(m=>{const a=win(m,1),b=win(m,2),x=rw[m.t1],y=rw[m.t2];x.i++;y.i++;x.mf+=a;x.ma+=b;y.mf+=b;y.ma+=a;if(a>b){x.w++;y.l++;x.p+=3}else if(b>a){y.w++;x.l++;y.p+=3}else{x.d++;y.d++;x.p++;y.p++}});sw.list.forEach(rd=>rd.pairs.forEach(p=>{if(p.bye&&rw[p.a]){const x=rw[p.a];x.i++;x.w++;x.p+=3}}));return Object.values(rw).sort((x,y)=>y.p-x.p||(y.mf-y.ma)-(x.mf-x.ma)||y.mf-x.mf||sw.teams.indexOf(x.t)-sw.teams.indexOf(y.t))}
+function swissNext(e,q){const sw=swCtx(e,q).sw,pool=sw.list.length?swissStand(e,q).map(x=>x.t):[...sw.teams],pairs=[];
+if(pool.length%2){const had=new Set(sw.list.flatMap(rd=>rd.pairs.filter(p=>p.bye).map(p=>p.a)));let k=pool.length-1;while(k>0&&had.has(pool[k]))k--;pairs.push({a:pool.splice(k,1)[0],b:null,bye:1})}
+if(!sw.list.length){const h=pool.length/2;for(let i=0;i<h;i++)pairs.push({a:pool[i],b:pool[i+h]})}else{const pl=(a,b)=>sw.list.some(rd=>rd.pairs.some(p=>(p.a==a&&p.b==b)||(p.a==b&&p.b==a)));while(pool.length){const a=pool.shift();let i=pool.findIndex(b=>!pl(a,b));if(i<0)i=0;pairs.push({a,b:pool.splice(i,1)[0]})}}
+sw.list.push({pairs})}
+const swissView=(e,q)=>{const c=swCtx(e,q),mg=canEditEv(e),sw=c.sw,adv=c.adv,R=c.R,Q=q?1:0;
+let h=evHead(e)+(q?`<div class="m" style="margin-bottom:10px">🎯 Квалификация (швейцарская система): <b>${R} раундов</b> · матчи <b>${c.fmt}</b> · участвуют все зарегистрированные команды · в основной этап проходят топ-${adv}, остальные выбывают · победа 3 очка, ничья 1.</div>`:`<div class="m" style="margin-bottom:10px">Швейцарская система: <b>${R} раундов</b> · матчи <b>${e.stages.group}</b> · в плей-офф выходят топ-${adv} · победа 3 очка, ничья 1. Пары каждого раунда собираются по очкам.</div>`);
+if(mg){const last=sw&&sw.list.length?sw.list[sw.list.length-1]:null,done=!!last&&last.pairs.every(p=>p.bye||p.mid);h+=`<div class="row" style="flex-wrap:wrap;margin-bottom:10px">${!sw?`<button class="btn s c" onclick="evSwissStart('${e.id}',${Q})">▶️ Запустить ${q?'квалификацию':'швейцарку'}</button>`:`${sw.list.length<R?`<button class="btn s c" ${done?'':'disabled'} onclick="evSwissNext('${e.id}',${Q})">➡️ Раунд ${sw.list.length+1}</button>`:''}${q&&!e.qdone&&sw.list.length>=R?`<button class="btn s c" ${done?'':'disabled'} onclick="evQualDone('${e.id}')">✅ Завершить квалификацию</button>`:''}<button class="btn s d" onclick="evSwissReset('${e.id}',${Q})">Сбросить</button>`}</div>`}
+if(!sw)return h+`<div class="card m">${q?'Квалификация ещё не запущена. Раунд 1 формируется по VRS.':'Швейцарка ещё не запущена. Раунд 1 формируется по VRS.'}</div>`;
+if(q&&e.qdone)h+=`<div class="card" style="background:linear-gradient(90deg,#2ecc7133,var(--bg2))"><div class="m">✅ КВАЛИФИКАЦИЯ ЗАВЕРШЕНА</div><div class="t">В основной этап вышли ${e.qualified.length} команд(ы)</div></div>`;
+const st=swissStand(e,q);h+=`<div class="card"><table class="tb"><tr><th>#</th><th style="text-align:left">Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Карты</th><th>О</th></tr>${st.map((x,i)=>`<tr class="${i<adv?'q':''}" onclick="go('team','${x.t}')"><td>${i+1}</td><td>${T(x.t)?esc(T(x.t).name):'?'}</td><td>${x.i}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.mf}:${x.ma}</td><td><b>${x.p}</b></td></tr>`).join('')}</table></div>`;
+if(mg)h+=`<div class="m" style="margin-top:8px">${q?'Нажмите на пару текущего раунда, чтобы внести результат. Затем «➡️ Раунд», а после всех раундов — «✅ Завершить квалификацию».':'Нажмите на пару текущего раунда, чтобы внести результат. Затем «➡️ Раунд» и после всех раундов — сетка плей-офф.'}</div>`;
+return h+sw.list.map((rd,ri)=>({rd,ri})).reverse().map(({rd,ri})=>`<h2>Раунд ${ri+1}</h2>`+rd.pairs.map((pr,pi)=>{if(pr.bye)return`<div class="card row"><div class="sp t">${T(pr.a)?esc(T(pr.a).name):'?'}</div><span class="tag reg">BYE · +3 очка</span></div>`;const m=S.matches.find(x=>x.id==pr.mid),ck=mg&&ri==sw.list.length-1&&!(q&&e.qdone);return`<div class="card row ${ck?'click':''}" ${ck?`onclick="evSwissResult('${e.id}',${ri},${pi},${Q})"`:''}><div class="sp t">${T(pr.a)?esc(T(pr.a).name):'?'}</div><div class="score" style="font-size:18px">${m?win(m,1)+' : '+win(m,2):'—'}</div><div class="sp t" style="text-align:right">${T(pr.b)?esc(T(pr.b).name):'?'}</div></div>`}).join('')).join('')};
+function evSwissStart(id,q){const e=evById(id);if(!canEditEv(e))return;if(!q&&e.stages.q&&!e.qdone)return toast('Сначала завершите квалификацию');const base=q?e.teams:mainTeams(e);if(base.length<2)return toast('Нужно минимум 2 команды');const sw={teams:teamsSorted().filter(t=>base.includes(t.id)).map(t=>t.id),list:[]};if(q)e.qswiss=sw;else e.swiss=sw;swissNext(e,q);save();render()}
+function evSwissNext(id,q){const e=evById(id),c=e&&swCtx(e,q);if(!e||!canEditEv(e)||!c.sw||c.sw.list.length>=c.R)return;swissNext(e,q);save();render()}
+function evSwissReset(id,q){const e=evById(id);if(!canEditEv(e))return;if(!confirm(q?'Сбросить квалификацию? Её результаты и весь основной этап будут удалены.':'Сбросить швейцарку? Результаты раундов будут удалены.'))return;if(q){S.matches=S.matches.filter(m=>!(m.ev==id&&m.stage=='qual'));e.qswiss=null;e.qdone=false;e.qualified=null;resetMain(e)}else{S.matches=S.matches.filter(m=>!(m.ev==id&&m.stage=='swiss'));e.swiss=null}save();render()}
+function evQualDone(id){const e=evById(id);if(!canEditEv(e)||!e.qswiss)return;const c=swCtx(e,true),last=e.qswiss.list[e.qswiss.list.length-1];if(e.qswiss.list.length<c.R||!last||!last.pairs.every(p=>p.bye||p.mid))return toast('Сначала сыграйте все раунды квалификации');const st=swissStand(e,true);e.qualified=st.slice(0,Math.min(c.adv,st.length)).map(x=>x.t);e.qdone=true;save();render();toast('Квалификация завершена: проходят '+e.qualified.length)}
+function evSwissResult(id,ri,pi,q){const e=evById(id),c=swCtx(e,q),sw=c.sw,pr=sw.list[ri].pairs[pi];if(!canEditEv(e))return;if(q&&e.qdone)return toast('Квалификация завершена');if(ri!=sw.list.length-1)return toast('Редактировать можно только текущий раунд');const bo=+c.fmt.slice(2),old=S.matches.find(x=>x.id==pr.mid);
+sheet((q?'Квалификация · раунд ':'Раунд ')+(ri+1)+' · '+T(pr.a).name+' vs '+T(pr.b).name+' ('+c.fmt+')',[{k:'date',l:'Дата',t:'date',v:old?old.date:new Date().toISOString().slice(0,10)},{k:'maps',l:'Карты (по строке: Название 13-9). Пул: '+MAP_POOL.join(', '),t:'area',ph:'Sandstone 13-9',v:old?old.maps.map(x=>x.map+' '+x.a+'-'+x.b).join('\n'):''}],v=>{
+const mp=parseMaps(v.maps);if(!mp.length){toast(parseMaps.err||'Добавьте хотя бы одну карту');return false}if(mp.length>bo){toast('Формат '+c.fmt+': не больше '+bo+' карт');return false}
+if(!old){const m={id:nid(),ev:id,stage:c.stage,round:(q?'Квалификация · раунд ':'Раунд ')+(ri+1),t1:pr.a,t2:pr.b,date:v.date,maps:mp};S.matches.unshift(m);pr.mid=m.id}else{old.date=v.date;old.maps=mergeMaps(old.maps,mp)}},'Сохранить результат')}
+function evGroups(id){const e=evById(id);if(!canEditEv(e))return;if(e.stages.q&&!e.qdone)return toast('Сначала завершите квалификацию');const mt=mainTeams(e),mx=Math.max(1,Math.min(4,Math.floor(mt.length/2)));if(mt.length<2)return toast('Нужно минимум 2 команды');
+sheet('Группы',[{k:'n',l:'Количество групп',t:'select',o:Array.from({length:mx},(_,i)=>[i+1,i+1]),v:Math.min(mx,e.groups.length||1)}],v=>{const n=+v.n;if(S.matches.some(m=>m.ev==id&&m.stage=='group')&&!confirm('Матчи группового этапа будут удалены. Продолжить?'))return false;S.matches=S.matches.filter(m=>!(m.ev==id&&m.stage=='group'));const q=teamsSorted().filter(t=>mt.includes(t.id)).map(t=>t.id);e.groups=Array.from({length:n},(_,i)=>({name:String.fromCharCode(65+i),teams:[]}));q.forEach((t,i)=>{const row=Math.floor(i/n),c=i%n;e.groups[row%2?n-1-c:c].teams.push(t)})},'Распределить по VRS')}
+function evBracket(id){const e=evById(id);if(!canEditEv(e))return;if(e.stages.q&&!e.qdone)return toast('Сначала завершите квалификацию');if(mainTeams(e).length<2)return toast('Нужно минимум 2 команды');const o=[['all',e.stages.q?'Прошедшие квалификацию (по VRS)':'Все зарегистрированные (по VRS)']];if(e.stages.s1=='groups'&&e.groups.length)o.push(['top2','Лучшие 2 из каждой группы']);if(e.stages.s1=='swiss'&&e.swiss)o.push(['swiss','Топ-'+(e.stages.adv||4)+' из швейцарки']);
+sheet('Сетка плей-офф',[{k:'src',l:'Кто играет в плей-офф',t:'select',o,v:o[o.length-1][0]},{k:'typ',l:'Тип сетки',t:'select',o:[['single','Одиночная (Single Elimination)'],['double','Двойная — с нижней сеткой (Double Elimination)']],v:e.bracket&&e.bracket.type=='double'?'double':'single'}],v=>{let seeds=[];if(v.src=='top2'){[0,1].forEach(k=>e.groups.forEach(g=>{const x=standings(e,g)[k];if(x)seeds.push(x.t)}))}else if(v.src=='swiss'){if(e.swiss.list.length<(e.stages.rounds||5)&&!confirm('Швейцарка ещё не завершена. Сформировать сетку по текущей таблице?'))return false;seeds=swissStand(e).slice(0,e.stages.adv||4).map(x=>x.t)}else seeds=teamsSorted().filter(t=>mainTeams(e).includes(t.id)).map(t=>t.id);
+if(seeds.length<2){toast('Недостаточно команд для сетки');return false}if(bracketHasResults(e.bracket)&&!confirm('Результаты прежней сетки будут удалены. Продолжить?'))return false;S.matches=S.matches.filter(m=>!(m.ev==id&&['playoff','lower','final','third'].includes(m.stage)));delete e.champ;if(v.typ=='double')genBracketDb(e,seeds);else genBracket(e,seeds)},'Сформировать')}
+function evResult(id,ri,si){const e=evById(id);if(!canEditEv(e))return;const rd=e.bracket.rounds[ri],sl=rd.slots[si],bo=+rd.fmt.slice(2),old=S.matches.find(x=>x.id==sl.mid);
+sheet(rd.name+' · '+(T(sl.a)?T(sl.a).name:'?')+' vs '+(T(sl.b)?T(sl.b).name:'?')+' ('+rd.fmt+')',[{k:'date',l:'Дата',t:'date',v:old?old.date:new Date().toISOString().slice(0,10)},{k:'maps',l:'Карты (по строке: Название 13-9). Пул: '+MAP_POOL.join(', '),t:'area',ph:'Sandstone 13-9',v:old?old.maps.map(x=>x.map+' '+x.a+'-'+x.b).join('\n'):''}],v=>{
+const mp=parseMaps(v.maps);if(!mp.length){toast(parseMaps.err||'Добавьте хотя бы одну карту');return false}if(mp.length>bo){toast('Формат '+rd.fmt+': не больше '+bo+' карт');return false}const t={maps:mp},a=win(t,1),b=win(t,2);if(a==b){toast('В плей-офф ничья невозможна');return false}
+const w=a>b?sl.a:sl.b,last=ri==e.bracket.rounds.length-1,nx=last?null:e.bracket.rounds[ri+1].slots[si>>1],side=si%2?'b':'a';if(nx&&nx.mid&&nx[side]!=w){toast('Следующий матч уже сыгран — сначала измените его результат');return false}
+const l=w==sl.a?sl.b:sl.a;if(e.bracket.third&&ri==e.bracket.rounds.length-2){const sd=si%2?'b':'a';if(e.bracket.third.mid&&e.bracket.third[sd]!=l){toast('Матч за 3 место уже сыгран — сначала измените его результат');return false}}
+if(!old){const m={id:nid(),ev:e.id,stage:last?'final':'playoff',round:rd.name,t1:sl.a,t2:sl.b,date:v.date,maps:mp};S.matches.unshift(m);sl.mid=m.id}else{old.date=v.date;old.maps=mergeMaps(old.maps,mp)}
+sl.w=w;if(nx)nx[side]=w;else e.champ=w;if(e.bracket.third&&ri==e.bracket.rounds.length-2)e.bracket.third[si%2?'b':'a']=l;computePlaces(e)},'Сохранить результат')}
+function evAddMatch(id){const e=evById(id);if(!canEditEv(e))return;if(e.stages.s1!='groups')return toast('В этом турнире нет группового этапа');if(!e.groups.length)return toast('Сначала сформируйте группы');
+const g0=e.groups[0],all=e.groups.flatMap(g=>g.teams).map(T).filter(Boolean).map(t=>[t.id,t.name]),m={id:nid(),ev:id,stage:'group',t1:g0.teams[0],t2:g0.teams[1]||g0.teams[0],date:new Date().toISOString().slice(0,10),maps:[]},f=mf(m);f[0].o=f[1].o=all;
+sheet('Матч группового этапа ('+e.stages.group+')',[{k:'grp',l:'Группа',t:'select',o:e.groups.map(g=>[g.name,'Группа '+g.name]),v:g0.name},...f],v=>{const g=e.groups.find(x=>x.name==v.grp);if(!g.teams.includes(v.t1)||!g.teams.includes(v.t2)){toast('Обе команды должны быть из группы '+g.name);return false}m.grp=g.name;if(applyM(m,v)===false)return false;S.matches.unshift(m)},'Добавить матч')}
+const rolesList=()=>{const v=me(),own=v.plat=='OWNER',q=(S.rq||'').trim().toLowerCase(),opts=own?[['','Обычный игрок'],['ORGANIZER','ORGANIZER'],['ADMIN','ADMIN'],['OWNER','OWNER']]:[['','Обычный игрок'],['ORGANIZER','ORGANIZER']],ord={OWNER:0,ADMIN:1,ORGANIZER:2,'':3};
+return[...S.players].filter(p=>!q||p.nick.toLowerCase().includes(q)||String(p.gid).toLowerCase().includes(q)).sort((a,b)=>ord[a.plat||'']-ord[b.plat||'']).map(p=>{const lock=!own&&(p.plat=='ADMIN'||p.plat=='OWNER');return`<div class="card row">${pav(p)}<div class="sp"><div class="t">${esc(p.nick)}${platTag(p)}</div><div class="m">🆔 ${esc(p.gid)}</div></div><select style="width:130px;margin:0;padding:8px" ${lock?'disabled':''} onchange="setPlat('${p.id}',this.value)">${opts.map(o=>`<option value="${o[0]}" ${o[0]==(p.plat||'')?'selected':''}>${o[1]}</option>`).join('')}${lock?`<option selected>${p.plat}</option>`:''}</select></div>`}).join('')||'<div class="m">Игрок не найден</div>'};
+const rolesTab=()=>`<div class="card m" style="margin-bottom:10px">ORGANIZER — создаёт и ведёт свои турниры.<br>ADMIN — админ-панель, управляет всеми турнирами.<br>OWNER — владелец платформы: выдаёт любые роли, включая ADMIN и OWNER.${me().plat=='OWNER'?'':'<br>🔒 Вы можете выдавать только ORGANIZER.'}</div><input placeholder="🔎 Поиск игрока по нику или ID" value="${esc(S.rq)}" oninput="S.rq=this.value;document.getElementById('rl').innerHTML=rolesList()"><div id="rl">${rolesList()}</div>`;
+function setPlat(id,v){const t=P(id),own=me().plat=='OWNER';if(!S.admin||(!own&&!((v==''||v=='ORGANIZER')&&(!t.plat||t.plat=='ORGANIZER')))){toast('Недостаточно прав');return render()}if(t.plat=='OWNER'&&v!='OWNER'&&S.players.filter(x=>x.plat=='OWNER').length<2){toast('Нельзя снять роль у последнего владельца платформы');return render()}t.plat=v;save();render()}
+function evReg(id){const e=evById(id),p=me();if(!canManage()||e.teams.length>=e.max||e.teams.includes(p.team))return;if(roster(p.team).length<5)return toast('Для регистрации нужно минимум 5 игроков в команде (сейчас '+roster(p.team).length+')');e.teams.push(p.team);save();render();toast('Команда зарегистрирована')}
+function evUnreg(id){const e=evById(id);dropTeam(e,me().team);save();render()}
+function prakNew(to){const mt=me().team;if(!canManage())return;const o=S.teams.filter(t=>t.id!=mt).map(t=>[t.id,t.name]);if(!o.length)return toast('Нет других команд');
+sheet('Вызов на праку',[{k:'to',l:'Соперник',t:'select',o,v:to||o[0][0]},{k:'date',l:'Дата',t:'date',v:new Date().toISOString().slice(0,10)},{k:'time',l:'Время',t:'time',v:'20:00'},{k:'fmt',l:'Формат',t:'select',o:[['Bo1','Bo1'],['Bo2','Bo2'],['Bo3','Bo3']],v:'Bo3'},{k:'note',l:'Комментарий (необязательно)',v:''}],v=>{if(!v.date)return false;S.praks.unshift({id:nid(),t1:mt,t2:v.to,date:v.date,time:v.time||'20:00',fmt:v.fmt,note:v.note,status:'pending',maps:[]});toast('Вызов отправлен команде «'+T(v.to).name+'»')},'Отправить вызов')}
+const pk=id=>S.praks.find(x=>x.id==id);
+function prakAns(id,ok){const x=pk(id);if(!canManage()||x.t2!=me().team)return;if(ok)x.status='accepted';else S.praks=S.praks.filter(y=>y.id!=id);save();render()}
+function prakCancel(id){const x=pk(id);if(!canManage()||(x.t1!=me().team&&x.t2!=me().team)||!confirm('Отменить праку?'))return;S.praks=S.praks.filter(y=>y.id!=id);save();render()}
+const shrink=file=>new Promise(res=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,800/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.55))};im.src=fr.result};fr.readAsDataURL(file)});
+function prakFinish(id){const x=pk(id);if(!canManage()||(x.t1!=me().team&&x.t2!=me().team))return;
+const rows=t=>`<h2>${esc(T(t).name)}</h2>`+roster(t).map(p=>`<div class="row" style="margin-bottom:6px"><div class="sp t">${esc(p.nick)}</div>${['k','d','a'].map(c=>`<input class="mini" type="number" step="any" min="0" id="${c}_${p.id}" placeholder="${{k:'K',d:'D',a:'ADR'}[c]}">`).join('')}</div>`).join('');
+sh.innerHTML=`<div class="sheet" onclick="if(event.target==this)sh.innerHTML=''"><div><div class="t" style="font-size:18px">🏁 Завершить матч</div><div class="m" style="margin:4px 0 10px">Загрузите скриншот итоговой таблицы и введите результат. Игроков с пустыми полями статистика не затрагивает.</div><label>Карты (по строке: Название 13-9)</label><textarea id="fm" rows="3" placeholder="Sandstone 13-9" oninput="shotInputs()"></textarea><div id="shl"></div>${rows(x.t1)}${rows(x.t2)}<button class="btn" id="fok">Отправить и засчитать</button><button class="btn g" onclick="sh.innerHTML=''">Отмена</button></div></div>`;
+const g=i=>document.getElementById(i);shotInputs();
+g('fok').onclick=async()=>{const maps=parseMaps(g('fm').value);if(!maps.length)return toast(parseMaps.err||'Добавьте хотя бы одну карту');const fls=maps.map((_,i)=>{const e=g('fsh'+i);return e&&e.files[0]});if(fls.some(f=>!f))return toast('Приложите скриншот для каждой карты (всего карт: '+maps.length+')');
+for(let i=0;i<maps.length;i++)maps[i].shot=await shrink(fls[i]);x.maps=maps;x.status='done';x.stats=[];const a1=win(x,1),a2=win(x,2);
+[x.t1,x.t2].forEach((t,i)=>roster(t).forEach(p=>{const kv=g('k_'+p.id).value,dv=g('d_'+p.id).value;if(kv===''&&dv==='')return;const k=+kv||0,d=+dv||0,a=+g('a_'+p.id).value||0,n=gm(p),won=a1==a2?'x':((i==0?a1>a2:a2>a1)?'w':'l');p.adr=n?+(((+p.adr)*n+a)/(n+1)).toFixed(1):a;p.k+=k;p.d+=d;if(won=='w')p.w++;if(won=='l')p.l++;x.stats.push({pid:p.id,k,d,a,r:won})}));
+sh.innerHTML='';save();render();toast('Матч засчитан: VRS и статистика обновлены')}}
+function shotView(id){sh.innerHTML='';go('match',id)}
+function prakAnnul(id){if(!(S.admin||me().admin)||!confirm('Аннулировать праку? Статистика и VRS будут пересчитаны.'))return;const x=pk(id);(x.stats||[]).forEach(z=>{const p=P(z.pid);if(!p)return;const n=gm(p);p.k-=z.k;p.d-=z.d;if(z.r!='x'){p.adr=n>1?+(((+p.adr)*n-z.a)/(n-1)).toFixed(1):0}if(z.r=='w')p.w--;if(z.r=='l')p.l--});x.status='annulled';save();render()}
+function admmatch(id){const m=S.matches.find(x=>x.id==id);sheet('Матч',mf(m),v=>applyM(m,v))}
+function del(k,id){if(!confirm('Удалить?'))return;if(k=='teams')rmTeam(id);else S[k]=S[k].filter(x=>x.id!=id);if(k=='players')S.invites=S.invites.filter(i=>i.to!=id);if(S.me==id&&!P(S.me))S.me=S.players[0]?S.players[0].id:null;save();render()}
+// ===== Скриншоты матчей =====
+const mergeMaps=(old,mp)=>{mp.forEach((x,i)=>{if(old&&old[i]&&old[i].map==x.map&&old[i].shot&&!x.shot)x.shot=old[i].shot});return mp};
+const mgrOf=t=>{const p=me(),r=p&&roleIn(p,t);return r=='OWNER'||r=='LEADER'};
+function canShot(m){if(S.admin)return true;const e=m.ev&&evById(m.ev);if(e)return canEditEv(e);return mgrOf(m.t1)||mgrOf(m.t2)}
+function shotInputs(){const ta=document.getElementById('fm'),box=document.getElementById('shl');if(!ta||!box)return;const names=ta.value.split('\n').map(s=>s.trim().match(/^(.+?)\s+(\d+)\s*[-:]\s*(\d+)$/)).filter(Boolean).map(x=>mapName(x[1])||x[1]),key=names.join('|');if(box.dataset.k===key)return;box.dataset.k=key;box.innerHTML=names.map((n,i)=>`<label>📸 Скриншот карты ${i+1}: ${esc(n)} (обязательно)</label><input type="file" accept="image/*" id="fsh${i}">`).join('')||'<div class="m" style="margin-bottom:8px">Введите карты — для каждой появится поле скриншота.</div>'}
+function shotPick(mid,i){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=async()=>{const f=inp.files[0],m=allM().find(x=>x.id==mid);if(!f||!m||!canShot(m)||!m.maps[i])return;m.maps[i].shot=await shrink(f);save();render()};inp.click()}
+function shotDel(mid,i){const m=allM().find(x=>x.id==mid);if(!m||!canShot(m)||!confirm('Удалить скриншот?'))return;delete m.maps[i].shot;save();render()}
+function shotZoom(mid,i){const m=allM().find(x=>x.id==mid),s=m&&(i<0?m.shot:m.maps[i]&&m.maps[i].shot);if(!s)return;sh.innerHTML=`<div class="sheet" onclick="sh.innerHTML=''"><div><img src="${s}" style="width:100%;border-radius:12px"><button class="btn g">Закрыть</button></div></div>`}
+// ===== ТП / АП =====
+// ТП — техническое поражение в ближайшем матче; АП — автопоражение во всех матчах (снятие с турнира).
+// Соперник получает техническую победу и проходит дальше.
+const techOf=m=>m.maps&&m.maps.length&&m.maps.every(x=>x.map=='ТП'||x.map=='АП')?m.maps[0].map:null;
+const boN=f=>+String(f||'Bo1').slice(2)||1;
+const techMaps=(f,kind,aWins)=>Array.from({length:boN(f)==2?2:Math.ceil(boN(f)/2)},()=>({map:kind,a:aWins?13:0,b:aWins?0:13}));
+function techMatch(e,stage,round,t1,t2,w,kind,fmt){const m={id:nid(),ev:e.id,stage,round,t1,t2,date:new Date().toISOString().slice(0,10),maps:techMaps(fmt,kind,w==t1)};S.matches.unshift(m);return m}
+function dqUse(e,t){const d=e.dq&&e.dq[t];if(d&&d.kind=='ТП')delete e.dq[t]}
+function dqPick(e,a,b){if(e.dq[a])return[a,b];if(e.dq[b])return[b,a];return null}
+function autoDq(e){
+  if(!e.dq||!Object.keys(e.dq).length)return;
+  let ch=true,n=0;
+  while(ch&&n++<100){ch=false;
+    [[e.qswiss,'qual'],[e.swiss,'swiss']].forEach(([sw,st])=>{
+      if(!sw||!sw.list.length||(st=='qual'&&e.qdone))return;
+      const rd=sw.list[sw.list.length-1],fmt=st=='qual'?e.stages.qfmt:e.stages.group,rn=(st=='qual'?'Квалификация · раунд ':'Раунд ')+sw.list.length;
+      rd.pairs.forEach(pr=>{if(pr.bye||pr.mid)return;const x=dqPick(e,pr.a,pr.b);if(!x)return;const m=techMatch(e,st,rn,pr.a,pr.b,x[1],e.dq[x[0]].kind,fmt);pr.mid=m.id;dqUse(e,x[0]);ch=true})});
+    const b=e.bracket;
+    if(b&&b.type!='double'){
+      const R=b.rounds.length;
+      outer:for(let ri=0;ri<R;ri++){const rd=b.rounds[ri];for(let si=0;si<rd.slots.length;si++){const sl=rd.slots[si];if(sl.w||sl.bye||sl.mid||!sl.a||!sl.b)continue;const x=dqPick(e,sl.a,sl.b);if(!x)continue;
+        const w=x[1],last=ri==R-1,m=techMatch(e,last?'final':'playoff',rd.name,sl.a,sl.b,w,e.dq[x[0]].kind,rd.fmt);sl.mid=m.id;sl.w=w;
+        if(last)e.champ=w;else b.rounds[ri+1].slots[si>>1][si%2?'b':'a']=w;
+        if(b.third&&ri==R-2)b.third[si%2?'b':'a']=x[0];
+        dqUse(e,x[0]);computePlaces(e);ch=true;break outer}}
+      const t=b.third;if(t&&!t.w&&!t.mid&&t.a&&t.b){const x=dqPick(e,t.a,t.b);if(x){const m=techMatch(e,'third','Матч за 3 место',t.a,t.b,x[1],e.dq[x[0]].kind,t.fmt);t.mid=m.id;t.w=x[1];dqUse(e,x[0]);computePlaces(e);ch=true}}
+    }
+    if(b&&b.type=='double'){
+      const list=dbAll(b).concat([[b.gf,'g',0,0]],b.gf2?[[b.gf2,'g',1,0]]:[]);
+      for(const [sl,k,r,i] of list){if(!sl.a||!sl.b||sl.a==BYE||sl.b==BYE||sl.bye||sl.w||sl.rw)continue;const x=dqPick(e,sl.a,sl.b);if(!x)continue;
+        const m=techMatch(e,k=='u'?'playoff':k=='l'?'lower':'final',dbName(b,k,r),sl.a,sl.b,x[1],e.dq[x[0]].kind,dbFmt(b,k,r));sl.mid=m.id;sl.rw=x[1];dqUse(e,x[0]);dbSync(e);ch=true;break}
+    }
+  }
+}
+function evDq(id,t){const e=evById(id);if(!canEditEv(e)||!T(t))return;e.dq=e.dq||{};const cur=e.dq[t];
+  sheet('ТП / АП · '+T(t).name,[{k:'kind',l:'Решение (соперник получает тех. победу и проходит дальше)',t:'select',o:[['ТП','ТП — техническое поражение в ближайшем матче'],['АП','АП — автопоражение во всех матчах (снятие с турнира)'],['','Снять отметку']],v:cur?cur.kind:'ТП'}],v=>{if(v.kind)e.dq[t]={kind:v.kind};else delete e.dq[t]},'Применить')}
+// ===== Профиль игрока =====
+const pst=p=>S.praks.filter(x=>x.status=='done'&&x.stats).flatMap(x=>x.stats.filter(z=>z.pid==p.id).map(z=>({x,z}))).sort((a,b)=>a.x.date<b.x.date?-1:a.x.date>b.x.date?1:0);
+const rate=(k,d,a)=>+(0.6*(k/Math.max(1,d))+0.4*(a/75)).toFixed(2);
+function chartP(ents){if(ents.length<2)return'<div class="card m">Для графика нужно минимум 2 матча со статистикой.</div>';const W=520,H=170,pl=28,pb=18,n=ents.length;const ser=[['rating','#2fd67b',e=>rate(e.z.k,e.z.d,e.z.a)],['kd','#6b8cff',e=>e.z.k/Math.max(1,e.z.d)]];const vals=ser.flatMap(s=>ents.map(s[2]));const mx=Math.max(1.6,Math.ceil(Math.max(...vals)*5)/5);const X=i=>pl+i*(W-pl-6)/(n-1),Y=v=>H-pb-v/mx*(H-pb-8);let g='';[0,.4,.8,1.2,1.6,2,2.4].filter(v=>v<=mx).forEach(v=>{g+=`<line x1="${pl}" x2="${W}" y1="${Y(v)}" y2="${Y(v)}" stroke="#262b3d"/><text x="2" y="${Y(v)+4}" fill="#7d86a3" font-size="10">${v}</text>`});
+return`<div class="card"><div class="m" style="margin-bottom:6px"><span style="color:#2fd67b">— rating</span> · <span style="color:#6b8cff">— K/D</span></div><svg viewBox="0 0 ${W} ${H}" style="width:100%">${g}${ser.map(s=>`<polyline fill="none" stroke="${s[1]}" stroke-width="2" points="${ents.map((e,i)=>X(i)+','+Y(s[2](e))).join(' ')}"/>`).join('')}<text x="${pl}" y="${H-3}" fill="#7d86a3" font-size="10">${ents[0].x.date}</text><text x="${W}" y="${H-3}" fill="#7d86a3" font-size="10" text-anchor="end">${ents[n-1].x.date}</text></svg></div>`}
+function pickPhoto(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=()=>{const f=inp.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,256,256);me().photo=c.toDataURL('image/jpeg',.8);save();render()};im.src=fr.result};fr.readAsDataURL(f)};inp.click()}
+// ===== Профиль команды =====
+function rankHist(id){const P0={};S.teams.forEach(t=>P0[t.id]=1000);const out=[];allM().filter(m=>!techOf(m)).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).forEach(m=>{const a=P0[m.t1],b=P0[m.t2];if(a==null||b==null)return;const w1=win(m,1),w2=win(m,2),e=1/(1+Math.pow(10,(b-a)/400)),sc=w1>w2?1:w1<w2?0:.5,mu=1+.25*Math.max(0,Math.abs(w1-w2)-1),d=Math.round(32*mu*(sc-e));P0[m.t1]+=d;P0[m.t2]-=d;if(m.t1==id||m.t2==id)out.push({date:m.date,p:P0[id],r:1+Object.keys(P0).filter(k=>P0[k]>P0[id]).length})});return out}
+function chartR(h){if(h.length<2)return'<div class="card m">График появится после 2 сыгранных матчей.</div>';const W=520,H=190,pl=26,pb=18,n=h.length,mx=Math.max(3,...h.map(x=>x.r)),X=i=>pl+i*(W-pl-8)/(n-1),Y=r=>10+(r-1)/(mx-1)*(H-pb-18);let g='';for(let r=1;r<=mx;r++)g+=`<line x1="${pl}" x2="${W}" y1="${Y(r)}" y2="${Y(r)}" stroke="#262b3d"/><text x="4" y="${Y(r)+4}" fill="#7d86a3" font-size="10">${r}</text>`;let pts='';h.forEach((x,i)=>{if(i)pts+=`${X(i)},${Y(h[i-1].r)} `;pts+=`${X(i)},${Y(x.r)} `});return`<div class="card"><svg viewBox="0 0 ${W} ${H}" style="width:100%">${g}<polyline fill="none" stroke="#b78bff" stroke-width="2" points="${pts}"/><text x="${pl}" y="${H-3}" fill="#7d86a3" font-size="10">${h[0].date}</text><text x="${W}" y="${H-3}" fill="#7d86a3" font-size="10" text-anchor="end">${h[n-1].date}</text></svg></div>`}
+// ===== Правило: PLAYER только в одной команде, LEADER/CEO — в любом числе =====
+function otherPlayerTeam(p,except){const m=mem(p).find(x=>x.role=='PLAYER'&&x.team!=except&&T(x.team));return m?m.team:null}
+// ===== Запасные игроки =====
+function isRes(p,tid){const m=mem(p).find(x=>x.team==tid);return !!(m&&m.res)}
+function resToggle(id,tid){tid=tid||me().team;const p=P(id);if(!tid||!mgrOf(tid)||!p||!roleIn(p,tid))return;const m=mem(p).find(x=>x.team==tid);
+  if(m.res){const mains=roster(tid).filter(x=>x.id!=id&&!isRes(x,tid));
+    if(mains.length>=5){sheet('Основа заполнена (5/5)',[{k:'o',l:'Кого перевести в запас вместо '+p.nick+'?',t:'select',o:mains.map(x=>[x.id,x.nick]),v:mains[0].id}],v=>{const o=P(v.o);if(!o)return false;mem(o).find(x=>x.team==tid).res=true;delete m.res},'Поменять местами');return}
+    delete m.res}else m.res=true;
+  save();render()}
+bootstrapOnline();
+</script></body></html>
