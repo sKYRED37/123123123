@@ -1,0 +1,3 @@
+STOP USING THE OLD NETLIFY/PROXY ARCHIVES.
+Deploy this repository as one Bothost app.
+Telegram Mini App URL: https://bot-1791109324-4239-skyred123.bothost.tech
