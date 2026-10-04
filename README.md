@@ -4,7 +4,7 @@ Node.js + Express + SQLite backend for the Telegram Mini App.
 
 Required environment variables:
 - `BOT_TOKEN`
-- `FRONTEND_ORIGIN=https://standrisereworkvrs.netlify.app`
+- `FRONTEND_ORIGIN=https://standrisereworkvrsofficial.netlify.app
 - `PORT=3000`
 - `DB_PATH=./standrise.sqlite`
 
