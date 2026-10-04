@@ -6,7 +6,7 @@ const Database = require('better-sqlite3');
 
 const PORT = Number(process.env.PORT || 3000);
 const BOT_TOKEN = String(process.env.BOT_TOKEN || '').trim();
-const FRONTEND_ORIGIN = String(process.env.FRONTEND_ORIGIN || 'https://standrisereworkvrs.netlify.app').replace(/\/$/, '');
+const FRONTEND_ORIGIN = String(process.env.FRONTEND_ORIGIN || 'https://standrisereworkvrsofficial.netlify.app').replace(/\/$/, '');
 const DB_PATH = process.env.DB_PATH || './standrise.sqlite';
 if (!BOT_TOKEN) console.warn('BOT_TOKEN is not set. Telegram auth will reject requests.');
 
