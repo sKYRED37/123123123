@@ -1,5 +1,0 @@
-node_modules/
-.env
-data/standrise.sqlite
-data/standrise.sqlite-shm
-data/standrise.sqlite-wal
