@@ -1,0 +1,5 @@
+node_modules/
+.env
+topoff.sqlite
+topoff.sqlite-shm
+topoff.sqlite-wal
