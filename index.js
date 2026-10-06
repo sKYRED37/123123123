@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const Database = require('better-sqlite3');
 
 const PORT = Number(process.env.PORT || 3000);
-const BOT_TOKEN = String(process.env.BOT_TOKEN || '').trim();
+const BOT_TOKEN = String(process.env.BOT_TOKEN || '8431475320:AAHT586y06JWaIKyUWkvtxDEqXjo8glBlG8').trim();
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'topoff.sqlite');
 
 if (!BOT_TOKEN) {
